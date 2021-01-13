@@ -9,6 +9,12 @@ import styles from './index.less';
 
 export type SiderTheme = 'light' | 'dark';
 
+const ENVTagColor = {
+  dev: 'orange',
+  test: 'green',
+  pre: '#87d068',
+};
+
 const GlobalHeaderRight: React.FC = () => {
   const { initialState } = useModel('@@initialState');
 

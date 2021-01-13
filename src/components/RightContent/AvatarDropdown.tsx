@@ -19,7 +19,7 @@ export type GlobalHeaderRightProps = {
  * 退出登录，并且将当前的 url 保存
  */
 const loginOut = async () => {
-  outLogin();
+  await outLogin();
   localStorage.removeItem('token');
   const { query, pathname } = history.location;
   const { redirect } = query;

@@ -1,8 +1,5 @@
 import React from 'react';
-import type {
-  Settings as LayoutSettings,
-  MenuDataItem,
-} from '@ant-design/pro-layout';
+import type { Settings as LayoutSettings } from '@ant-design/pro-layout';
 import { PageLoading } from '@ant-design/pro-layout';
 import { notification } from 'antd';
 import type { RequestConfig, RunTimeLayoutConfig } from 'umi';
@@ -35,12 +32,12 @@ export async function getInitialState(): Promise<{
     }
     return undefined;
   };
+  // 如果是登录页面，不执行
   if (history.location.pathname !== '/user/login') {
     const currentUser = await fetchUserInfo();
-    console.log(currentUser);
     return {
       fetchUserInfo,
-      currentUser: currentUser,
+      currentUser,
       settings: defaultSettings,
     };
   }
@@ -64,6 +61,8 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     },
     menuHeaderRender: undefined,
     menuDataRender: () => initialState?.currentUser?.menus || [],
+    // 自定义 403 页面
+    // unAccessible: <div>unAccessible</div>,
     ...initialState?.settings,
   };
 };
