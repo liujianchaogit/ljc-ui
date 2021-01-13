@@ -1,24 +1,13 @@
 ﻿export default [
   {
-    path: '/user',
+    name: 'login',
     layout: false,
-    routes: [
-      {
-        path: '/user',
-        routes: [
-          {
-            name: 'login',
-            path: '/user/login',
-            component: './User/login',
-          },
-        ],
-      },
-    ],
+    path: '/user/login',
+    component: './User/login',
   },
   {
     path: '/welcome',
     name: 'welcome',
-    icon: 'smile',
     component: './Welcome',
   },
   {
@@ -26,6 +15,24 @@
     redirect: '/welcome',
   },
   {
-    component: './404',
+    name: 'sysUser',
+    path: '/sys/user',
+    component: './Sys/user',
+    access: 'userRouteFilter'
   },
+  {
+    name: 'sysRole',
+    path: '/sys/role',
+    component: './Sys/role',
+    access: 'roleRouteFilter'
+  },
+  {
+    name: 'sysMenu',
+    path: '/sys/menu',
+    component: './Sys/menu',
+    access: 'menuRouteFilter'
+  },
+  {
+    component: './404',
+  }
 ];

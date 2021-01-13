@@ -73,10 +73,7 @@ const Login: React.FC = () => {
         return;
       }
       // 如果失败去设置用户错误信息
-      setUserLoginState({
-        status: 'error',
-        type,
-      });
+      setUserLoginState({ status: 'error', type });
     } catch (error) {
       message.error('登录失败，请重试！');
     }

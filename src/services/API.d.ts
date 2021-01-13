@@ -13,6 +13,7 @@ declare namespace API {
     access?: 'user' | 'guest' | 'admin';
     unreadCount?: number;
     menus?: [];
+    permissions?: string[]
   };
 
   export type LoginStateType = {
