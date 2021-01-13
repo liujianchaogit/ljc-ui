@@ -14,9 +14,7 @@ export type GlobalHeaderRightProps = {
   onNoticeClear?: (tabName?: string) => void;
 };
 
-const getNoticeData = (
-  notices: API.NoticeIconData[],
-): Record<string, API.NoticeIconData[]> => {
+const getNoticeData = (notices: API.NoticeIconData[]): Record<string, API.NoticeIconData[]> => {
   if (!notices || notices.length === 0 || !Array.isArray(notices)) {
     return {};
   }
