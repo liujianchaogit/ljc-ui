@@ -21,7 +21,8 @@
     "@ant-design/pro-layout": "^6.5.0",
     "@types/classnames": "^2.2.11",
     "@umijs/preset-react": "1.x",
-    "umi": "^3.3.4"
+    "umi": "^3.3.4",
+    "umi-plugin-setting-drawer": "^1.0.3"
   },
   "devDependencies": {
     "@types/react": "^16.9.0",
