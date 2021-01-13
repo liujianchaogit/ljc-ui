@@ -9,19 +9,8 @@ import {
 } from '@ant-design/icons';
 import { Alert, Space, message, Tabs } from 'antd';
 import React, { useState } from 'react';
-import ProForm, {
-  ProFormCaptcha,
-  ProFormCheckbox,
-  ProFormText,
-} from '@ant-design/pro-form';
-import {
-  useIntl,
-  Link,
-  history,
-  FormattedMessage,
-  SelectLang,
-  useModel,
-} from 'umi';
+import ProForm, { ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
+import { useIntl, Link, history, FormattedMessage, SelectLang, useModel } from 'umi';
 import Footer from '@/components/Footer';
 import type { LoginParamsType } from '@/services/login';
 import { accountLogin, getFakeCaptcha } from '@/services/login';
@@ -106,9 +95,7 @@ const Login: React.FC = () => {
               <span className={styles.title}>Ant Design</span>
             </Link>
           </div>
-          <div className={styles.desc}>
-            Ant Design 是西湖区最具影响力的 Web 设计规范
-          </div>
+          <div className={styles.desc}>Ant Design 是西湖区最具影响力的 Web 设计规范</div>
         </div>
 
         <div className={styles.main}>
@@ -133,7 +120,7 @@ const Login: React.FC = () => {
               },
             }}
             onFinish={async (values) => {
-              await handleSubmit(values as LoginParamsType);
+              handleSubmit(values as LoginParamsType);
             }}
           >
             <Tabs activeKey={type} onChange={setType}>
@@ -210,9 +197,7 @@ const Login: React.FC = () => {
               </>
             )}
 
-            {status === 'error' && loginType === 'mobile' && (
-              <LoginMessage content="验证码错误" />
-            )}
+            {status === 'error' && loginType === 'mobile' && <LoginMessage content="验证码错误" />}
             {type === 'mobile' && (
               <>
                 <ProFormText
@@ -298,28 +283,19 @@ const Login: React.FC = () => {
               }}
             >
               <ProFormCheckbox noStyle name="autoLogin">
-                <FormattedMessage
-                  id="pages.login.rememberMe"
-                  defaultMessage="自动登录"
-                />
+                <FormattedMessage id="pages.login.rememberMe" defaultMessage="自动登录" />
               </ProFormCheckbox>
               <a
                 style={{
                   float: 'right',
                 }}
               >
-                <FormattedMessage
-                  id="pages.login.forgotPassword"
-                  defaultMessage="忘记密码"
-                />
+                <FormattedMessage id="pages.login.forgotPassword" defaultMessage="忘记密码" />
               </a>
             </div>
           </ProForm>
           <Space className={styles.other}>
-            <FormattedMessage
-              id="pages.login.loginWith"
-              defaultMessage="其他登录方式"
-            />
+            <FormattedMessage id="pages.login.loginWith" defaultMessage="其他登录方式" />
             <AlipayCircleOutlined className={styles.icon} />
             <TaobaoCircleOutlined className={styles.icon} />
             <WeiboCircleOutlined className={styles.icon} />
