@@ -36,6 +36,7 @@
     name: 'fcw',
     path: '/fcw',
     component: './Fcw',
+    layout: false,
     access: 'fcwRouteFilter'
   },
   {

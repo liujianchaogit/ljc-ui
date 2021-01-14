@@ -5,3 +5,9 @@ export async function queryFcw(categories: string, page = 1) {
     params: { categories, page }
   }).then(res => res.data);
 }
+
+export async function queryMp4(id: string) {
+  return request('/fcw/mp4', {
+    params: { id }
+  }).then(res => res.data);
+}

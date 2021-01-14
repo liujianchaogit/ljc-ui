@@ -1,9 +1,9 @@
 import React, { useState, useEffect }  from 'react';
 import { TabPaneProps } from 'antd/lib/tabs';
 import useAntdMediaQuery from 'use-media-antd-query';
-import { queryFcw } from '@/services/fcw'
-import { Menu } from 'antd';
-import style from './index.less'
+import { queryFcw, queryMp4 } from '@/services/fcw'
+import { Button, Menu, message, Spin } from "antd";
+import styles from './index.less'
 
 
 const fcwList: (TabPaneProps & {
@@ -45,100 +45,90 @@ const Fcw: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [activeKey, setActiveKey] = useState('27f8a5c9ce83cbfa7b70fc5c9a73a082');
 
-  // const { run, loading } = useRequest((categories, page) => {
-  //   return request('/fcw/page', { params: { categories, page } })
-  // },{manual: true});
-
-  const s  = () => {
-    if (!loading) {
-      const scr = document.documentElement.scrollTop || document.body.scrollTop // 向上滚动的那一部分高度
-      const clientHeight = document.documentElement.clientHeight // 屏幕高度也就是当前设备静态下你所看到的视觉高度
-      const scrHeight = document.documentElement.scrollHeight || document.body.scrollHeight // 整个网页的实际高度，兼容Pc端
-      if (scr + clientHeight + 100 >= scrHeight) {
-        // next()
-      }
-    }
-  }
-
-  const getData = async (key: string) => {
-    setLoading(false)
+  const getData = async ({ key }) => {
+    setLoading(true)
+    setActiveKey(key)
     setData(await queryFcw(key))
     setPage(1)
-    setActiveKey(key)
-    setLoading(true)
+    setLoading(false)
   }
 
   const more = async () => {
-    setLoading(false)
-    setData(await queryFcw(activeKey, page + 1))
-    setPage(page + 1)
     setLoading(true)
+    setData([...data, ...await queryFcw(activeKey, page + 1)])
+    setPage(page + 1)
+    setLoading(false)
   }
 
-  useEffect(() => {
-    document.addEventListener('scroll', s)
-    getData('27f8a5c9ce83cbfa7b70fc5c9a73a082')
+  // useEffect(() => {
+  //   console.log('init')
+  //   getData({ key: "27f8a5c9ce83cbfa7b70fc5c9a73a082" })
+  //   return
+  // }, []);
 
-  }, []);
+  const play = async (id: string) => {
+    setLoading(true)
+    queryMp4(id).then(res => {
+      if (!res)
+        message.error('您没有权限欣赏！');
+      else
+        window.open(res)
+      setLoading(false)
+    })
+  }
 
   const colSize = useAntdMediaQuery();
 
   const isMobile = (colSize === 'sm' || colSize === 'xs');
 
   return (
-    // <PageContainer
-    //   loading={loading}
-    //   tabList={fcwList}
-    //   onTabChange={getPornList}
-    //   tabActiveKey={activeKey}
-    // >
-    //   <div className={style.fd}>
-    //     {
-    //       pornList.map(p => {
-    //         return (
-    //           <div className={style.card} style={{width: isMobile ? '48%' : '18%'}} key={p.id}>
-    //             <div>
-    //               <img alt={p.id} src={p.img} />
-    //             </div>
-    //             <span>{p.title}</span>
-    //           </div>
-    //         )
-    //       })
-    //     }
-    //   </div>
-    //   <div style={{textAlign: 'center'}}>
-    //     <span onClick={more} style={{cursor: 'pointer'}}>加载更多...</span>
-    //   </div>
-    // </PageContainer>
-    <div className={style.fcw}>
-      <div className={style.fcwContent}>
+    <div className={styles.fcw}>
+      <div className={styles.content}>
         <Menu
           theme={'dark'}
           mode={'horizontal'}
+          selectedKeys={[activeKey]}
+          onClick={getData}
         >
           {
             fcwList.map(x => {
               return (
-                <Menu.Item>
+                <Menu.Item key={x.key}>
                   <span>{x.tab}</span>
                 </Menu.Item>
               )
             })
           }
         </Menu>
-        <div className={style.fd}>
-          {
-            data.map(p => {
-              return (
-                <div className={style.card} style={{ width: isMobile ? '48%' : '18%' }} key={p.id}>
-                  <div>
-                    <img alt={p.id} src={p.img} />
+        <Spin spinning={loading}>
+          <div className={styles.fd}>
+            {
+              data.map((p, index) => {
+                return (
+                  <div
+                    onClick={() => play(p.id)}
+                    className={styles.card} style={{ width: isMobile ? '48%' : '18%' }}
+                    key={index}
+                  >
+                    <div>
+                      <img alt={p.id} src={p.img} />
+                    </div>
+                    <span>{p.title}</span>
                   </div>
-                  <span>{p.title}</span>
-                </div>
-              )
-            })
-          }
+                )
+              })
+            }
+            { !isMobile &&
+              [...Array(5 - data.length % 5)].map((item, index) => {
+                return (
+                  <div style={{ width: isMobile ? '48%' : '18%' }} key={index}></div>
+                )
+              })
+            }
+          </div>
+        </Spin>
+        <div style={{textAlign: "center", margin: '30px 0'}}>
+          <Button onClick={more}>点击加载更多...</Button>
         </div>
       </div>
     </div>
