@@ -4,6 +4,7 @@ export default function access(initialState: { currentUser?: API.CurrentUser | u
   return {
     userRouteFilter: currentUser?.permissions && currentUser.permissions.indexOf('sys:user') > -1,
     roleRouteFilter: currentUser?.permissions && currentUser.permissions.indexOf('sys:role') > -1,
-    menuRouteFilter: currentUser?.permissions && currentUser.permissions.indexOf('sys:menu') > -1
+    menuRouteFilter: currentUser?.permissions && currentUser.permissions.indexOf('sys:menu') > -1,
+    fcwRouteFilter: currentUser?.permissions && currentUser.permissions.indexOf('fcw') > -1
   };
 }

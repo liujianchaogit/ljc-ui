@@ -33,6 +33,12 @@
     access: 'menuRouteFilter'
   },
   {
+    name: 'fcw',
+    path: '/fcw',
+    component: './Fcw',
+    access: 'fcwRouteFilter'
+  },
+  {
     component: './404',
   }
 ];
