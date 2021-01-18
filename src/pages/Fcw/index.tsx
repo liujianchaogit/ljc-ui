@@ -60,18 +60,16 @@ const Fcw: React.FC = () => {
     setLoading(false)
   }
 
-  // useEffect(() => {
-  //   console.log('init')
-  //   getData({ key: "27f8a5c9ce83cbfa7b70fc5c9a73a082" })
-  //   return
-  // }, []);
+  useEffect(() => {
+    console.log('init')
+    getData({ key: "27f8a5c9ce83cbfa7b70fc5c9a73a082" })
+    return
+  }, []);
 
   const play = async (id: string) => {
     setLoading(true)
     queryMp4(id).then(res => {
-      if (!res)
-        message.error('您没有权限欣赏！');
-      else
+      if (res)
         window.open(res)
       setLoading(false)
     })

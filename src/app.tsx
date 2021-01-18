@@ -28,6 +28,7 @@ export async function getInitialState(): Promise<{
         return await queryCurrent();
       }
     } catch (error) {
+      localStorage.removeItem('token')
       history.push('/user/login');
     }
     return undefined;
@@ -93,10 +94,10 @@ const errorHandler = (error: ResponseError) => {
   const { response } = error;
   if (response && response.status) {
     const errorText = codeMessage[response.status] || response.statusText;
-    const { status, url } = response;
+    const { status } = response;
 
     notification.error({
-      message: `请求错误 ${status}: ${url}`,
+      message: `请求错误 ${status}`,
       description: errorText,
     });
   }
@@ -121,8 +122,21 @@ const authHeaderInterceptor = (url: string, options: RequestOptionsInit) => {
   };
 };
 
+const demoResponseInterceptors = async (response: Response, options: RequestOptionsInit) => {
+  const data = await response.clone().json();
+  console.log(!data.code)
+  if (data.code) {
+    notification.error({
+      description: data.code,
+      message: data.msg
+    });
+  }
+  return response;
+}
+
 export const request: RequestConfig = {
   errorHandler,
   requestInterceptors: [authHeaderInterceptor],
-  prefix: 'http://localhost:8080',
+  responseInterceptors: [demoResponseInterceptors],
+  prefix: 'http://172.25.4.60:8080'
 };

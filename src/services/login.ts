@@ -13,6 +13,7 @@ export async function accountLogin(params: LoginParamsType) {
   return request<{ data: { access_token?: string } }>('/oauth/token', {
     method: 'POST',
     params: { username, password, grant_type: 'password' },
+    errorHandler: undefined
   }).then((res) => res?.data);
 }
 
