@@ -1,45 +1,59 @@
 ﻿export default [
   {
-    name: 'login',
-    layout: false,
-    path: '/user/login',
-    component: './User/login',
+    path: '/',
+    redirect: '/welcome'
   },
   {
     path: '/welcome',
-    name: 'welcome',
-    component: './Welcome',
+    component: 'Welcome'
   },
   {
-    path: '/',
-    redirect: '/welcome',
+    path: '/account',
+    routes: [
+      {
+        path: '/account/settings',
+        component: 'Account/settings'
+      },
+      {
+        component: './404'
+      }
+    ]
   },
   {
-    name: 'sysUser',
-    path: '/sys/user',
-    component: './Sys/user',
-    access: 'userRouteFilter'
+    path: '/sys',
+    routes: [
+      {
+        path: '/sys/user',
+        component: 'Sys/user',
+        access: 'userRouteFilter'
+      },
+      {
+        path: '/sys/role',
+        component: 'Sys/role',
+        access: 'roleRouteFilter'
+      },
+      {
+        path: '/sys/menu',
+        component: 'Sys/menu',
+        access: 'menuRouteFilter'
+      },
+      {
+        component: './404'
+      }
+    ]
   },
   {
-    name: 'sysRole',
-    path: '/sys/role',
-    component: './Sys/role',
-    access: 'roleRouteFilter'
+    path: '/user/login',
+    component: 'User/login',
+    layout: false
   },
   {
-    name: 'sysMenu',
-    path: '/sys/menu',
-    component: './Sys/menu',
-    access: 'menuRouteFilter'
+    component: './404'
   },
   {
-    name: 'fcw',
     path: '/fcw',
-    component: './Fcw',
+    component: 'Fcw',
     layout: false,
     access: 'fcwRouteFilter'
-  },
-  {
-    component: './404',
   }
-];
+]
