@@ -122,21 +122,16 @@ const authHeaderInterceptor = (url: string, options: RequestOptionsInit) => {
   };
 };
 
-const demoResponseInterceptors = async (response: Response, options: RequestOptionsInit) => {
-  const data = await response.clone().json();
-  console.log(!data.code)
-  if (data.code) {
-    notification.error({
-      description: data.code,
-      message: data.msg
-    });
-  }
-  return response;
-}
-
 export const request: RequestConfig = {
+  errorConfig: {
+    adaptor: (resData) => {
+      return {
+        ...resData,
+        success: !resData.code
+      }
+    }
+  },
   errorHandler,
-  requestInterceptors: [authHeaderInterceptor],
-  responseInterceptors: [demoResponseInterceptors],
-  prefix: 'http://172.25.4.60:8080'
+  prefix: 'http://192.168.1.3:8080',
+  requestInterceptors: [authHeaderInterceptor]
 };

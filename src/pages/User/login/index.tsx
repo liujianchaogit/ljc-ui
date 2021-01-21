@@ -64,9 +64,9 @@ const Login: React.FC = () => {
     setSubmitting(true);
     try {
       // 登录
-      const token = await accountLogin({ ...values, type });
-      if (token.access_token) {
-        localStorage.setItem('token', token.access_token);
+      const { access_token } = await accountLogin({ ...values, type });
+      if (access_token) {
+        localStorage.setItem('token', access_token);
         message.success('登录成功！');
         await fetchUserInfo();
         goto();
@@ -75,7 +75,7 @@ const Login: React.FC = () => {
       // 如果失败去设置用户错误信息
       setUserLoginState({ status: 'error', type });
     } catch (error) {
-      if (error.data && error.data.code === 0) {
+      if (error.data && !error.data.code) {
         setUserLoginState({ status: 'error', type });
       } else {
         message.error('登录失败，请重试！');

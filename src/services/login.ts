@@ -14,7 +14,7 @@ export async function accountLogin(params: LoginParamsType) {
     method: 'POST',
     params: { username, password, grant_type: 'password' },
     errorHandler: undefined
-  }).then((res) => res?.data);
+  }).then(res => res?.data);
 }
 
 export async function getFakeCaptcha(mobile: string) {
