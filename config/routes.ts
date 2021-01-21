@@ -10,12 +10,12 @@
   {
     path: '/account',
     routes: [
+      // {
+      //   path: '/account/settings',
+      //   component: 'Account/settings'
+      // },
       {
-        path: '/account/settings',
-        component: 'Account/settings'
-      },
-      {
-        component: './404'
+        component: '404'
       }
     ]
   },
@@ -38,7 +38,7 @@
         access: 'menuRouteFilter'
       },
       {
-        component: './404'
+        component: '404'
       }
     ]
   },
@@ -48,12 +48,12 @@
     layout: false
   },
   {
-    component: './404'
-  },
-  {
     path: '/fcw',
     component: 'Fcw',
     layout: false,
     access: 'fcwRouteFilter'
+  },
+  {
+    component: '404'
   }
 ]

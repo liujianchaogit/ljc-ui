@@ -48,16 +48,22 @@ const Fcw: React.FC = () => {
   const getData = async ({ key }) => {
     setLoading(true)
     setActiveKey(key)
-    setData(await queryFcw(key))
-    setPage(1)
-    setLoading(false)
+    try {
+      setData(await queryFcw(key))
+      setPage(1)
+    } finally {
+      setLoading(false)
+    }
   }
 
   const more = async () => {
     setLoading(true)
-    setData([...data, ...await queryFcw(activeKey, page + 1)])
-    setPage(page + 1)
-    setLoading(false)
+    try {
+      setData([...data, ...await queryFcw(activeKey, page + 1)])
+      setPage(page + 1)
+    } finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => {
