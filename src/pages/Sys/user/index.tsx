@@ -140,7 +140,7 @@ export default () => {
     <ProTable<UserItem>
       columns={columns}
       actionRef={actionRef}
-      request={async params => await page(params)}
+      request={params => page(params)}
       // editable={{
       //   type: 'multiple',
       // }}

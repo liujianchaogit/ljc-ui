@@ -10,11 +10,11 @@ export type LoginParamsType = {
 
 export async function accountLogin(params: LoginParamsType) {
   const { username, password, mobile, captcha, type } = params;
-  return request<{ data: { access_token?: string } }>('/oauth/token', {
+  return (await request<{ data: { access_token: string } }>('/oauth/token', {
     method: 'POST',
     params: { username, password, grant_type: 'password' },
     errorHandler: undefined
-  }).then(res => res?.data);
+  })).data
 }
 
 export async function getFakeCaptcha(mobile: string) {

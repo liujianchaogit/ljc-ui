@@ -75,11 +75,12 @@ const Login: React.FC = () => {
       // 如果失败去设置用户错误信息
       setUserLoginState({ status: 'error', type });
     } catch (error) {
-      if (error.data && !error.data.code) {
+      if (error.data && !error.data.success) {
         setUserLoginState({ status: 'error', type });
       } else {
         message.error('登录失败，请重试！');
       }
+      localStorage.removeItem('token')
     }
     setSubmitting(false);
   };
