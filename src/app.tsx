@@ -91,6 +91,13 @@ const codeMessage = {
  * 异常处理程序
  */
 const errorHandler = (error: ResponseError) => {
+  if (error.name === 'BizError') {
+    notification.error({
+      description: error.message,
+      message: error.info.errorCode,
+    });
+    throw error
+  }
   const { response } = error;
   if (response && response.status) {
     const errorText = codeMessage[response.status] || response.statusText;
@@ -124,6 +131,14 @@ const authHeaderInterceptor = (url: string, options: RequestOptionsInit) => {
 
 export const request: RequestConfig = {
   errorHandler,
+  // errorConfig: {
+  //   adaptor: (resData) => {
+  //     return {
+  //       ...resData,
+  //       showType: 2
+  //     };
+  //   },
+  // },
   prefix: 'http://localhost:8080',
   requestInterceptors: [authHeaderInterceptor]
 };

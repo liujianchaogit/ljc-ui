@@ -40,7 +40,7 @@ const fcwList: (TabPaneProps & {
 ]
 
 const Fcw: React.FC = () => {
-  const [data, setData] = useState<{ id: string;title: string;img: string; }[]>([]);
+  const [data, setData] = useState<{ id: string;title: string;img: string;added: string;duration: string }[]>([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [activeKey, setActiveKey] = useState('27f8a5c9ce83cbfa7b70fc5c9a73a082');
@@ -74,11 +74,14 @@ const Fcw: React.FC = () => {
 
   const play = async (id: string) => {
     setLoading(true)
-    queryMp4(id).then(res => {
-      if (res)
-        window.open(res)
+    try {
+      queryMp4(id).then(res => {
+        if (res)
+          window.open(res)
+      })
+    } finally {
       setLoading(false)
-    })
+    }
   }
 
   const colSize = useAntdMediaQuery();
@@ -118,6 +121,10 @@ const Fcw: React.FC = () => {
                       <img alt={p.id} src={p.img} />
                     </div>
                     <span>{p.title}</span>
+                    <div style={{display: "flex", justifyContent: "space-between"}}>
+                      <span>{p.duration}</span>
+                      <span>{p.added}</span>
+                    </div>
                   </div>
                 )
               })

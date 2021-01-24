@@ -1,10 +1,11 @@
 import { request } from 'umi';
-import type { UserItem } from "@/pages/Sys/user"
+import { UserItem } from "@/pages/Sys/user"
+import { RequestData } from "@ant-design/pro-table"
 
 export async function queryCurrent() {
   return (await request<{ data: API.CurrentUser }>('/user/info')).data
 }
 
 export async function page(params: any) {
-  return await request<{ data: UserItem[], total: number }>('/user/page', { params })
+  return await request<RequestData<UserItem>>('/user/page', { params })
 }
