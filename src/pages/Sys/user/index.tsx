@@ -1,10 +1,9 @@
-import React, { useRef, useState } from 'react';
-import { PlusOutlined, ManOutlined, WomanOutlined } from '@ant-design/icons';
-import { Button, Tag, Space, Menu, Dropdown } from 'antd';
-import type { ProColumns, ActionType } from '@ant-design/pro-table';
-import ProTable, { TableDropdown } from '@ant-design/pro-table';
-import { request } from 'umi';
-import { page } from '@/services/user'
+import React, { useState } from "react";
+import { ManOutlined, PlusOutlined, WomanOutlined } from "@ant-design/icons";
+import { Button, Menu } from "antd";
+import type { ProColumns } from "@ant-design/pro-table";
+import ProTable from "@ant-design/pro-table";
+import { page } from "@/services/user";
 import UserForm from "./UserForm";
 
 export type User = {
@@ -26,17 +25,14 @@ const menu = (
   </Menu>
 );
 export default () => {
-  // console.log('u index');
   const [user, setUser] = useState<User>()
   const [ visible, setVisible] = useState(false)
-  const showUserForm = (user: User) => {
+
+  const showUserForm = (user: User | undefined) => {
     setUser(user)
     setVisible(true)
   }
-  const closeUserForm = () => {
-    setUser(undefined)
-    setVisible(false)
-  }
+
   const columns: ProColumns<User>[] = [
     {
       // dataIndex: 'index',
@@ -94,7 +90,6 @@ export default () => {
       ],
     }
   ];
-  // const actionRef = useRef<ActionType>();
   return (
     <>
       <ProTable<User>
@@ -130,22 +125,13 @@ export default () => {
             key="button"
             icon={<PlusOutlined />}
             type="primary"
-            onClick={() => {
-              setVisible(true)
-            }}
+            onClick={() => {showUserForm(undefined)}}
           >
             新建
           </Button>
         ]}
       />
-      {
-        <UserForm
-          visible={visible}
-          user={user}
-          onVisibleChange={setVisible}
-          onCancel={() => setUser(undefined)}
-        />
-      }
+      <UserForm user={user} visible={visible} onVisibleChange={setVisible} />
     </>
   );
 };
