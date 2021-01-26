@@ -1,8 +1,9 @@
 import React from "react";
 import { message } from "antd";
-import ProForm, { ModalForm, ProFormText, ProFormRadio } from "@ant-design/pro-form";
+import ProForm, { ModalForm, ProFormText, ProFormRadio , ProFormSelect} from "@ant-design/pro-form";
 import { UserItem } from './index'
 import { update } from "@/services/user";
+import { list } from "@/services/role";
 
 export interface UserModalFormProps {
   user?: UserItem;
@@ -17,8 +18,6 @@ const UserModalForm: React.FC<UserModalFormProps> = ({ user, visible, onVisibleC
       visible={visible}
       onVisibleChange={onVisibleChange}
       onFinish={async (values) => {
-        values.roleIds = []
-        console.log(values);
         await update(values)
         message.success('提交成功');
         return true
@@ -60,6 +59,18 @@ const UserModalForm: React.FC<UserModalFormProps> = ({ user, visible, onVisibleC
         initialValue={user?.locked}
         name="locked"
         options={[{label: '正常', value: 0}, {label: '锁定', value: 1}]}
+      />
+      <ProFormSelect
+        initialValue={user?.roles.map(role => role.id)}
+        mode="multiple"
+        label="角色"
+        name="roleIds"
+        request={async () =>  (await list()).map(role => {
+          return {
+            label: role.name,
+            value: role.id
+          }
+        })}
       />
     </ModalForm>
   )

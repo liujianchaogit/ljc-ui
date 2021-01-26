@@ -3,6 +3,7 @@ import { Button } from "antd";
 import { ManOutlined, WomanOutlined, PlusOutlined } from "@ant-design/icons";
 import ProTable, { ProColumns } from "@ant-design/pro-table";
 import UserModalForm from "./UserModalForm";
+import { RoleItem} from "@/pages/Sys/role";
 import { page } from "@/services/user";
 
 export type UserItem = {
@@ -14,7 +15,7 @@ export type UserItem = {
   phone: string;
   mail: string;
   locked: number;
-  roleIds: number[];
+  roles: RoleItem[];
 }
 
 const User: React.FC = () => {
