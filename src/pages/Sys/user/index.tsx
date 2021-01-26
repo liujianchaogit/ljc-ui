@@ -1,56 +1,52 @@
 import React, { useState } from "react";
-import { ManOutlined, PlusOutlined, WomanOutlined } from "@ant-design/icons";
-import { Button, Menu } from "antd";
-import type { ProColumns } from "@ant-design/pro-table";
-import ProTable from "@ant-design/pro-table";
+import { Button } from "antd";
+import { ManOutlined, WomanOutlined, PlusOutlined } from "@ant-design/icons";
+import ProTable, { ProColumns } from "@ant-design/pro-table";
+import UserModalForm from "./UserModalForm";
 import { page } from "@/services/user";
-import UserForm from "./UserForm";
 
-export type User = {
+export type UserItem = {
   id: number;
   username: string;
   name: string;
-  avatar: string;
+  // avatar: string;
   sex: number;
   phone: string;
   mail: string;
   locked: number;
-};
+  roleIds: number[];
+}
 
-const menu = (
-  <Menu>
-    <Menu.Item key="1">1st item</Menu.Item>
-    <Menu.Item key="2">2nd item</Menu.Item>
-    <Menu.Item key="3">3rd item</Menu.Item>
-  </Menu>
-);
-export default () => {
-  const [user, setUser] = useState<User>()
+const User: React.FC = () => {
+  const [user, setUser] = useState<UserItem>()
   const [ visible, setVisible] = useState(false)
 
-  const showUserForm = (user: User | undefined) => {
+  const showUserForm = (user?: UserItem) => {
     setUser(user)
     setVisible(true)
   }
 
-  const columns: ProColumns<User>[] = [
+  const columns: ProColumns<UserItem>[] = [
     {
       // dataIndex: 'index',
       valueType: 'indexBorder',
+      align: 'center'
       // width: 48,
     },
     {
       title: '用户名',
-      dataIndex: 'username'
-      // width: '30%',
+      dataIndex: 'username',
+      align: 'center'
     },
     {
       title: '姓名',
-      dataIndex: 'name'
+      dataIndex: 'name',
+      align: 'center'
     },
     {
-      title: '姓别',
+      title: '性别',
       dataIndex: 'sex',
+      align: 'center',
       valueEnum: {
         0: <ManOutlined style={{color: "red"}} />,
         1: <WomanOutlined style={{color: "blue"}} />
@@ -58,15 +54,18 @@ export default () => {
     },
     {
       title: '电话',
-      dataIndex: 'phone'
+      dataIndex: 'phone',
+      align: 'center'
     },
     {
       title: '邮箱',
-      dataIndex: 'mail'
+      dataIndex: 'mail',
+      align: 'center'
     },
     {
       title: '状态',
       dataIndex: 'locked',
+      align: 'center',
       valueEnum: {
         0: { text: '正常', status: 'success' },
         1: { text: '锁定', status: 'error' },
@@ -75,63 +74,33 @@ export default () => {
     {
       title: '操作',
       valueType: 'option',
+      align: 'center',
       render: (_, record) => [
-        <a key="editable" onClick={() => showUserForm(record)}>编辑</a>,
-        <a key="delete">
-          删除
-        </a>,
-        // <TableDropdown
-        //   key="actionGroup"
-        //   onSelect={() => action.reload()}
-        //   menus={[
-        //     { key: 'delete', name: '删除' },
-        //   ]}
-        // />,
-      ],
+        <a key="edit" onClick={() => showUserForm(record)}>编辑</a>,
+        <a key="delete">删除</a>
+      ]
     }
-  ];
+  ]
+
   return (
     <>
-      <ProTable<User>
+      <ProTable <UserItem>
         columns={columns}
-        // actionRef={actionRef}
         request={params => page(params)}
-        // editable={{
-        //   type: 'multiple',
-        // }}
         rowKey="id"
-        // search={{
-        //   labelWidth: 'auto',
-        // }}
-        // form={{
-        //   // 由于配置了 transform，提交的参与与定义的不同这里需要转化一下
-        //   syncToUrl: (values, type) => {
-        //     if (type === 'get') {
-        //       return {
-        //         ...values,
-        //         created_at: [values.startTime, values.endTime],
-        //       };
-        //     }
-        //     return values;
-        //   },
-        // }}
-        // pagination={{
-        //   pageSize: 5,
-        // }}
-        // dateFormatter="string"
-        // headerTitle="高级表格"
         toolBarRender={() => [
           <Button
-            key="button"
-            icon={<PlusOutlined />}
             type="primary"
+            icon={<PlusOutlined />}
             onClick={() => {showUserForm(undefined)}}
           >
             新建
           </Button>
         ]}
       />
-      <UserForm user={user} visible={visible} onVisibleChange={setVisible} />
+      <UserModalForm user={user} visible={visible} onVisibleChange={setVisible} />
     </>
-  );
-};
+  )
+}
+
+export default User
