@@ -61,7 +61,7 @@ const UserModalForm: React.FC<UserModalFormProps> = ({ user, visible, onVisibleC
         options={[{label: '正常', value: 0}, {label: '锁定', value: 1}]}
       />
       <ProFormSelect
-        initialValue={user?.roles.map(role => role.id)}
+        initialValue={user?.roleList.map(role => role.id)}
         mode="multiple"
         label="角色"
         name="roleIds"

@@ -15,7 +15,7 @@ export type UserItem = {
   phone: string;
   mail: string;
   locked: number;
-  roles: RoleItem[];
+  roleList: RoleItem[];
 }
 
 const User: React.FC = () => {
