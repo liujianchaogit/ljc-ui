@@ -1,24 +1,25 @@
 import React from "react";
 import { message } from "antd";
 import ProForm, { ModalForm, ProFormText, ProFormRadio , ProFormSelect} from "@ant-design/pro-form";
-import { UserItem } from './index'
-import { update } from "@/services/user";
-import { list } from "@/services/role";
+import { UserType } from './'
+import { RoleType } from '@/pages/Sys/role';
+import { save, update } from "@/services/user";
 
 export interface UserModalFormProps {
-  user?: UserItem;
+  user?: UserType;
+  roleList?: RoleType[];
   visible: boolean;
   onVisibleChange: (visible: boolean) => void;
 }
 
-const UserModalForm: React.FC<UserModalFormProps> = ({ user, visible, onVisibleChange }) => {
+const UserModalForm: React.FC<UserModalFormProps> = ({ user, roleList, visible, onVisibleChange }) => {
   return (
     <ModalForm
       title={user ? '编辑用户' : '新增用户'}
       visible={visible}
       onVisibleChange={onVisibleChange}
       onFinish={async (values) => {
-        await update(values)
+        values.id ? await update(values) : await save(values)
         message.success('提交成功');
         return true
       }}
@@ -30,13 +31,20 @@ const UserModalForm: React.FC<UserModalFormProps> = ({ user, visible, onVisibleC
         initialValue={user?.username}
         name="username"
         label="用户名"
-        disabled
+        disabled={user?.id !== undefined}
+        rules={[{ required: user?.id === undefined }]}
       />
       <ProFormText
         initialValue={user?.name}
         name="name"
         label="姓名"
         rules={[{ required: true }]}
+      />
+      <ProFormText
+        // initialValue={user?.name}
+        name="password"
+        label="密码"
+        rules={[{ required: user?.id === undefined }]}
       />
       <ProFormText
         initialValue={user?.phone}
@@ -49,14 +57,14 @@ const UserModalForm: React.FC<UserModalFormProps> = ({ user, visible, onVisibleC
         label="邮箱"
       />
       <ProFormRadio.Group
-        initialValue={user?.sex}
+        initialValue={user?.sex || 0}
         name="sex"
         label="性别"
         options={[{label: '女', value: 0}, {label: '男', value: 1}]}
       />
       <ProFormRadio.Group
         radioType="button"
-        initialValue={user?.locked}
+        initialValue={user?.locked || 0}
         name="locked"
         options={[{label: '正常', value: 0}, {label: '锁定', value: 1}]}
       />
@@ -65,7 +73,7 @@ const UserModalForm: React.FC<UserModalFormProps> = ({ user, visible, onVisibleC
         mode="multiple"
         label="角色"
         name="roleIds"
-        request={async () =>  (await list()).map(role => {
+        options={roleList?.map(role => {
           return {
             label: role.name,
             value: role.id

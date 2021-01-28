@@ -1,6 +1,6 @@
 import React from 'react';
 
-export type RoleItem = {
+export type RoleType = {
   id: number;
   name: string;
   code: string;

@@ -1,12 +1,13 @@
-import React, { useState } from "react";
-import { Button } from "antd";
+import React, { useState, useEffect } from "react";
+import { Tag, Button } from "antd";
 import { ManOutlined, WomanOutlined, PlusOutlined } from "@ant-design/icons";
 import ProTable, { ProColumns } from "@ant-design/pro-table";
 import UserModalForm from "./UserModalForm";
-import { RoleItem} from "@/pages/Sys/role";
-import { page } from "@/services/user";
+import { RoleType} from "@/pages/Sys/role";
+import { remove, page } from "@/services/user";
+import { list } from "@/services/role";
 
-export type UserItem = {
+export type UserType = {
   id: number;
   username: string;
   name: string;
@@ -15,19 +16,24 @@ export type UserItem = {
   phone: string;
   mail: string;
   locked: number;
-  roleList: RoleItem[];
+  roleList: RoleType[];
 }
 
 const User: React.FC = () => {
-  const [user, setUser] = useState<UserItem>()
-  const [ visible, setVisible] = useState(false)
+  const [user, setUser] = useState<UserType>()
+  const [roleList, setRoleList] = useState<RoleType[]>()
+  const [visible, setVisible] = useState(false)
 
-  const showUserForm = (user?: UserItem) => {
+  useEffect(() => {
+      list().then(roleList => setRoleList(roleList))
+    }, [])
+
+  const showUserForm = (user?: UserType) => {
     setUser(user)
     setVisible(true)
   }
 
-  const columns: ProColumns<UserItem>[] = [
+  const columns: ProColumns<UserType>[] = [
     {
       // dataIndex: 'index',
       valueType: 'indexBorder',
@@ -54,6 +60,17 @@ const User: React.FC = () => {
       }
     },
     {
+      title: '角色',
+      dataIndex: 'roleList',
+      align: 'center',
+      hideInSearch: true,
+      render: roleList => roleList?.map(role => {
+        return (
+          <Tag key={role.id}>{role.name}</Tag>
+        )
+      })
+    },
+    {
       title: '电话',
       dataIndex: 'phone',
       align: 'center'
@@ -78,14 +95,14 @@ const User: React.FC = () => {
       align: 'center',
       render: (_, record) => [
         <a key="edit" onClick={() => showUserForm(record)}>编辑</a>,
-        <a key="delete">删除</a>
+        <a key="delete" onClick={() => remove(record.id)}>删除</a>
       ]
     }
   ]
 
   return (
     <>
-      <ProTable <UserItem>
+      <ProTable <UserType>
         columns={columns}
         request={params => page(params)}
         rowKey="id"
@@ -99,7 +116,12 @@ const User: React.FC = () => {
           </Button>
         ]}
       />
-      <UserModalForm user={user} visible={visible} onVisibleChange={setVisible} />
+      <UserModalForm
+        user={user}
+        roleList={roleList}
+        visible={visible}
+        onVisibleChange={setVisible}
+      />
     </>
   )
 }
