@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { Tag, Button } from "antd";
-import { ManOutlined, WomanOutlined, PlusOutlined } from "@ant-design/icons";
-import ProTable, { ProColumns } from "@ant-design/pro-table";
+import React, { useState, useRef } from "react";
+import { useRequest } from 'umi';
+import { Tag, Button, Popconfirm, message } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+import ProTable, { ProColumns, ActionType } from "@ant-design/pro-table";
 import UserModalForm from "./UserModalForm";
 import { RoleType} from "@/pages/Sys/role";
-import { remove, page } from "@/services/user";
-import { list } from "@/services/role";
+import { removeUser, pageUser } from "@/services/user";
+import { listRole } from "@/services/role";
 
 export type UserType = {
   id: number;
@@ -21,12 +22,9 @@ export type UserType = {
 
 const User: React.FC = () => {
   const [user, setUser] = useState<UserType>()
-  const [roleList, setRoleList] = useState<RoleType[]>()
   const [visible, setVisible] = useState(false)
-
-  useEffect(() => {
-      list().then(roleList => setRoleList(roleList))
-    }, [])
+  const tableRef = useRef<ActionType>()
+  const { data } = useRequest(listRole)
 
   const showUserForm = (user?: UserType) => {
     setUser(user)
@@ -55,8 +53,8 @@ const User: React.FC = () => {
       dataIndex: 'sex',
       align: 'center',
       valueEnum: {
-        0: <ManOutlined style={{color: "red"}} />,
-        1: <WomanOutlined style={{color: "blue"}} />
+        0: '男',
+        1: '女'
       }
     },
     {
@@ -95,7 +93,17 @@ const User: React.FC = () => {
       align: 'center',
       render: (_, record) => [
         <a key="edit" onClick={() => showUserForm(record)}>编辑</a>,
-        <a key="delete" onClick={() => remove(record.id)}>删除</a>
+        <Popconfirm
+          key="delete"
+          title={`确认删除${record.username}？`}
+          onConfirm={async () => {
+            await removeUser(record.id)
+            message.success('删除成功');
+            tableRef.current?.reloadAndRest && tableRef.current.reloadAndRest()
+          }}
+        >
+          <a>删除</a>
+        </Popconfirm>
       ]
     }
   ]
@@ -103,8 +111,9 @@ const User: React.FC = () => {
   return (
     <>
       <ProTable <UserType>
+        actionRef={tableRef}
         columns={columns}
-        request={params => page(params)}
+        request={params => pageUser(params)}
         rowKey="id"
         toolBarRender={() => [
           <Button
@@ -118,9 +127,10 @@ const User: React.FC = () => {
       />
       <UserModalForm
         user={user}
-        roleList={roleList}
+        roleList={data}
         visible={visible}
         onVisibleChange={setVisible}
+        reload={tableRef.current?.reloadAndRest}
       />
     </>
   )

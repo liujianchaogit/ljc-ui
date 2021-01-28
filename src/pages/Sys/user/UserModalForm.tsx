@@ -3,24 +3,26 @@ import { message } from "antd";
 import ProForm, { ModalForm, ProFormText, ProFormRadio , ProFormSelect} from "@ant-design/pro-form";
 import { UserType } from './'
 import { RoleType } from '@/pages/Sys/role';
-import { save, update } from "@/services/user";
+import { saveUser, updateUser } from "@/services/user";
 
 export interface UserModalFormProps {
   user?: UserType;
   roleList?: RoleType[];
   visible: boolean;
   onVisibleChange: (visible: boolean) => void;
+  reload?: () => void;
 }
 
-const UserModalForm: React.FC<UserModalFormProps> = ({ user, roleList, visible, onVisibleChange }) => {
+const UserModalForm: React.FC<UserModalFormProps> = ({ user, roleList, visible, onVisibleChange, reload }) => {
   return (
     <ModalForm
       title={user ? '编辑用户' : '新增用户'}
       visible={visible}
       onVisibleChange={onVisibleChange}
       onFinish={async (values) => {
-        values.id ? await update(values) : await save(values)
-        message.success('提交成功');
+        values.id ? await updateUser(values) : await saveUser(values)
+        message.success('更新成功');
+        reload && reload()
         return true
       }}
       layout='inline'
@@ -60,7 +62,7 @@ const UserModalForm: React.FC<UserModalFormProps> = ({ user, roleList, visible, 
         initialValue={user?.sex || 0}
         name="sex"
         label="性别"
-        options={[{label: '女', value: 0}, {label: '男', value: 1}]}
+        options={[{label: '男', value: 0}, {label: '女', value: 1}]}
       />
       <ProFormRadio.Group
         radioType="button"
