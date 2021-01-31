@@ -91,14 +91,14 @@ const codeMessage = {
  * 异常处理程序
  */
 const errorHandler = (error: ResponseError) => {
-  if (error.name === 'BizError') {
+  const { name, data, response } = error
+  if (name === 'BizError') {
     notification.error({
-      description: error.message,
-      message: error.info.errorCode,
+      description: data.errorMessage,
+      message: data.errorCode
     });
-    throw error
+    return data
   }
-  const { response } = error;
   if (response && response.status) {
     const errorText = codeMessage[response.status] || response.statusText;
     const { status } = response;
@@ -131,14 +131,6 @@ const authHeaderInterceptor = (url: string, options: RequestOptionsInit) => {
 
 export const request: RequestConfig = {
   errorHandler,
-  // errorConfig: {
-  //   adaptor: (resData) => {
-  //     return {
-  //       ...resData,
-  //       showType: 2
-  //     };
-  //   },
-  // },
   prefix: 'http://localhost:8080',
   requestInterceptors: [authHeaderInterceptor]
 };

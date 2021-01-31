@@ -1,85 +1,80 @@
 import React from "react";
-import { message } from "antd";
 import ProForm, { ModalForm, ProFormText, ProFormRadio , ProFormSelect} from "@ant-design/pro-form";
 import { UserType } from './'
 import { RoleType } from '@/pages/Sys/role';
-import { saveUser, updateUser } from "@/services/user";
+import { saveOrUpdate } from "@/services/api";
 
 export interface UserModalFormProps {
   user?: UserType;
-  roleList?: RoleType[];
-  visible: boolean;
-  onVisibleChange: (visible: boolean) => void;
-  reload?: () => void;
+  roles?: RoleType[];
+  visible?: boolean;
+  onVisibleChange?: (visible: boolean) => void;
+  refresh?: () => void;
 }
 
-const UserModalForm: React.FC<UserModalFormProps> = ({ user, roleList, visible, onVisibleChange, reload }) => {
+const UserModalForm: React.FC<UserModalFormProps> = ({ user, roles, visible, onVisibleChange, refresh }) => {
   return (
     <ModalForm
-      title={user ? '编辑用户' : '新增用户'}
-      visible={visible}
-      onVisibleChange={onVisibleChange}
-      onFinish={async (values) => {
-        values.id ? await updateUser(values) : await saveUser(values)
-        message.success('更新成功');
-        reload && reload()
-        return true
-      }}
       layout='inline'
       preserve={false}
+      visible={visible}
+      onVisibleChange={onVisibleChange}
+      title={user ? '编辑用户' : '新增用户'}
+      onFinish={user => saveOrUpdate('user', user, refresh)}
     >
-      <ProFormText initialValue={user?.id} name="id" hidden />
       <ProFormText
-        initialValue={user?.username}
-        name="username"
+        hidden
+        name="id"
+        initialValue={user?.id}
+      />
+      <ProFormText
         label="用户名"
+        name="username"
+        initialValue={user?.username}
         disabled={user?.id !== undefined}
         rules={[{ required: user?.id === undefined }]}
       />
       <ProFormText
-        initialValue={user?.name}
-        name="name"
         label="姓名"
+        name="name"
+        initialValue={user?.name}
         rules={[{ required: true }]}
       />
-      <ProFormText
-        // initialValue={user?.name}
-        name="password"
+      <ProFormText.Password
         label="密码"
+        name="password"
         rules={[{ required: user?.id === undefined }]}
       />
       <ProFormText
-        initialValue={user?.phone}
-        name="phone"
         label="电话"
+        name="phone"
+        initialValue={user?.phone}
       />
       <ProFormText
-        initialValue={user?.mail}
-        name="mail"
         label="邮箱"
+        name="mail"
+        initialValue={user?.mail}
       />
       <ProFormRadio.Group
-        initialValue={user?.sex || 0}
-        name="sex"
         label="性别"
-        options={[{label: '男', value: 0}, {label: '女', value: 1}]}
+        name="sex"
+        initialValue={user?.sex || 0}
+        options={[{ label: '男', value: 0 }, { label: '女', value: 1 }]}
       />
       <ProFormRadio.Group
+        label="状态"
+        name="locked"
         radioType="button"
         initialValue={user?.locked || 0}
-        name="locked"
-        options={[{label: '正常', value: 0}, {label: '锁定', value: 1}]}
+        options={[{ label: '正常', value: 0 }, { label: '锁定', value: 1 }]}
       />
       <ProFormSelect
-        initialValue={user?.roleList.map(role => role.id)}
-        mode="multiple"
         label="角色"
         name="roleIds"
-        options={roleList?.map(role => {
-          return {
-            label: role.name,
-            value: role.id
-          }
+        mode="multiple"
+        initialValue={user?.roles.map(role => role.id)}
+        options={roles?.map(role => {
+          return { label: role.name, value: role.id }
         })}
       />
     </ModalForm>

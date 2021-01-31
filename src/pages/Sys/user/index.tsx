@@ -1,12 +1,11 @@
 import React, { useState, useRef } from "react";
 import { useRequest } from 'umi';
-import { Tag, Button, Popconfirm, message } from "antd";
+import { Tag, Button, Popconfirm } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import ProTable, { ProColumns, ActionType } from "@ant-design/pro-table";
 import UserModalForm from "./UserModalForm";
-import { RoleType} from "@/pages/Sys/role";
-import { removeUser, pageUser } from "@/services/user";
-import { listRole } from "@/services/role";
+import { RoleType } from "@/pages/Sys/role";
+import { remove, list, page } from "@/services/api";
 
 export type UserType = {
   id: number;
@@ -17,16 +16,16 @@ export type UserType = {
   phone: string;
   mail: string;
   locked: number;
-  roleList: RoleType[];
+  roles: RoleType[];
 }
 
 const User: React.FC = () => {
   const [user, setUser] = useState<UserType>()
   const [visible, setVisible] = useState(false)
-  const tableRef = useRef<ActionType>()
-  const { data } = useRequest(listRole)
+  const ref = useRef<ActionType>()
+  const { data } = useRequest(() => list<RoleType>('role'))
 
-  const showUserForm = (user?: UserType) => {
+  const showUserModalForm = (user?: UserType) => {
     setUser(user)
     setVisible(true)
   }
@@ -36,7 +35,6 @@ const User: React.FC = () => {
       // dataIndex: 'index',
       valueType: 'indexBorder',
       align: 'center'
-      // width: 48,
     },
     {
       title: '用户名',
@@ -52,21 +50,16 @@ const User: React.FC = () => {
       title: '性别',
       dataIndex: 'sex',
       align: 'center',
-      valueEnum: {
-        0: '男',
-        1: '女'
-      }
+      valueEnum: { 0: '男', 1: '女' }
     },
     {
       title: '角色',
-      dataIndex: 'roleList',
+      dataIndex: 'roles',
       align: 'center',
       hideInSearch: true,
-      render: roleList => roleList?.map(role => {
-        return (
-          <Tag key={role.id}>{role.name}</Tag>
-        )
-      })
+      render: roles => (roles as RoleType[]).map(
+        role => <Tag key={role.id}>{role.name}</Tag>
+      )
     },
     {
       title: '电话',
@@ -84,23 +77,19 @@ const User: React.FC = () => {
       align: 'center',
       valueEnum: {
         0: { text: '正常', status: 'success' },
-        1: { text: '锁定', status: 'error' },
+        1: { text: '锁定', status: 'error' }
       }
     },
     {
       title: '操作',
       valueType: 'option',
       align: 'center',
-      render: (_, record) => [
-        <a key="edit" onClick={() => showUserForm(record)}>编辑</a>,
+      render: (_, user) => [
+        <a key="edit" onClick={() => showUserModalForm(user)}>编辑</a>,
         <Popconfirm
           key="delete"
-          title={`确认删除${record.username}？`}
-          onConfirm={async () => {
-            await removeUser(record.id)
-            message.success('删除成功');
-            tableRef.current?.reloadAndRest && tableRef.current.reloadAndRest()
-          }}
+          title={`确认删除${user.username}？`}
+          onConfirm={async () => await remove('user', user.id, ref.current?.reloadAndRest)}
         >
           <a>删除</a>
         </Popconfirm>
@@ -110,16 +99,16 @@ const User: React.FC = () => {
 
   return (
     <>
-      <ProTable <UserType>
-        actionRef={tableRef}
-        columns={columns}
-        request={params => pageUser(params)}
+      <ProTable <UserType, UserType>
         rowKey="id"
+        actionRef={ref}
+        columns={columns}
+        request={user => page<UserType>('user', user)}
         toolBarRender={() => [
           <Button
             type="primary"
             icon={<PlusOutlined />}
-            onClick={() => {showUserForm(undefined)}}
+            onClick={() => showUserModalForm()}
           >
             新建
           </Button>
@@ -127,10 +116,10 @@ const User: React.FC = () => {
       />
       <UserModalForm
         user={user}
-        roleList={data}
+        roles={data}
         visible={visible}
         onVisibleChange={setVisible}
-        reload={tableRef.current?.reloadAndRest}
+        refresh={ref.current?.reloadAndRest}
       />
     </>
   )

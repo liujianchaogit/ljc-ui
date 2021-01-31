@@ -17,7 +17,7 @@
     ]
   },
   "dependencies": {
-    "@ant-design/pro-form": "^1.13.8",
+    "@ant-design/pro-form": "^1.15.2",
     "@ant-design/pro-layout": "^6.5.0",
     "@ant-design/pro-table": "^2.26.0",
     "@types/classnames": "^2.2.11",
