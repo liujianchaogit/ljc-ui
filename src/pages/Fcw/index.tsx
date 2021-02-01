@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { request, useRequest } from "umi";
+import { request, useRequest, Link } from "umi";
 import { TabPaneProps } from "antd/lib/tabs";
 import useAntdMediaQuery from "use-media-antd-query";
 import { Menu, Spin } from "antd";
@@ -78,6 +78,9 @@ const Fcw: React.FC = () => {
             setActiveKey(m.key as string);
           }}
         >
+          <Menu.Item>
+            <Link to="/">LJC Design</Link>
+          </Menu.Item>
           {
             fcwList.map(x => {
               return (
