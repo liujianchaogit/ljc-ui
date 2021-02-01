@@ -6,7 +6,7 @@ const Settings: LayoutSettings & {
 } = {
   navTheme: 'dark',
   // 拂晓蓝
-  primaryColor: '#1890ff',
+  primaryColor: '#22fdae',
   layout: 'side',
   contentWidth: 'Fluid',
   fixedHeader: false,
@@ -16,6 +16,9 @@ const Settings: LayoutSettings & {
   pwa: false,
   logo: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
   iconfontUrl: '//at.alicdn.com/t/font_2325568_q3odw9sgj7.js',
+  menu: {
+    locale: false
+  }
 };
 
 export default Settings;

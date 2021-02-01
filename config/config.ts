@@ -15,4 +15,7 @@ export default defineConfig({
     type: 'none',
   },
   routes,
+  theme: {
+    'primary-color': defaultSettings.primaryColor,
+  }
 });
