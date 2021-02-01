@@ -1,8 +1,12 @@
 import { defineConfig } from 'umi';
+import defaultSettings from './defaultSettings';
 import routes from './routes';
 
 export default defineConfig({
-  layout: {},
+  layout: {
+    siderWidth: 208,
+    ...defaultSettings
+  },
   locale: {
     antd: true,
     baseNavigator: true,
