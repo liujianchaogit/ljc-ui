@@ -5,14 +5,9 @@ import { SortOrder } from 'antd/lib/table/interface'
 import { RequestData } from '@ant-design/pro-table'
 import { ParamsType } from '@ant-design/pro-provider'
 
-type ResultWithData<T = any> = {
-  success: boolean;
-  data: T;
-}
-
 export async function saveOrUpdate(type: string, params: ParamsType, refresh?: () => void) {
   const id: boolean = params.hasOwnProperty('id')
-  const { success } = await request<ResultWithData>(`/${type}`, {
+  const { success } = await request<API.Response>(`/${type}`, {
     method: id ? 'PUT' : 'POST',
     params
   })
@@ -26,7 +21,7 @@ export async function saveOrUpdate(type: string, params: ParamsType, refresh?: (
 }
 
 export async function remove(type: string, id?: number, refresh?: () => void) {
-  const { success } = await request<ResultWithData>(`/${type}/${id}`, {
+  const { success } = await request<API.Response>(`/${type}/${id}`, {
     method: 'DELETE'
   })
   if(success) {
@@ -39,7 +34,7 @@ export async function remove(type: string, id?: number, refresh?: () => void) {
 }
 
 export async function list<T extends ParamsType>(type: string) {
-  return await request<ResultWithData<T[]>>(`/${type}/list`)
+  return await request<API.Response<T[]>>(`/${type}/list`)
 }
 
 export async function page<T extends ParamsType>(type: string, params: T & {

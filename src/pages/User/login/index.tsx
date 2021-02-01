@@ -1,8 +1,7 @@
 import {
   AlipayCircleOutlined,
-  LockTwoTone,
-  MailTwoTone,
-  MobileTwoTone,
+  LockOutlined,
+  MobileOutlined,
   TaobaoCircleOutlined,
   UserOutlined,
   WeiboCircleOutlined,
@@ -12,8 +11,7 @@ import React, { useState } from 'react';
 import ProForm, { ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
 import { useIntl, Link, history, FormattedMessage, SelectLang, useModel } from 'umi';
 import Footer from '@/components/Footer';
-import type { LoginParamsType } from '@/services/login';
-import { accountLogin, getFakeCaptcha } from '@/services/login';
+import { login, getFakeCaptcha } from '@/services/ant-design-pro/login';
 
 import styles from './index.less';
 
@@ -30,9 +28,7 @@ const LoginMessage: React.FC<{
   />
 );
 
-/**
- * 此方法会跳转到 redirect 参数所在的位置
- */
+/** 此方法会跳转到 redirect 参数所在的位置 */
 const goto = () => {
   if (!history) return;
   setTimeout(() => {
@@ -44,7 +40,7 @@ const goto = () => {
 
 const Login: React.FC = () => {
   const [submitting, setSubmitting] = useState(false);
-  const [userLoginState, setUserLoginState] = useState<API.LoginStateType>({});
+  const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
   const [type, setType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');
 
@@ -60,31 +56,33 @@ const Login: React.FC = () => {
     }
   };
 
-  const handleSubmit = async (values: LoginParamsType) => {
+  const handleSubmit = async (values: API.LoginParams) => {
     setSubmitting(true);
     try {
       // 登录
-      const { access_token } = await accountLogin({ ...values, type });
-      if (access_token) {
-        localStorage.setItem('token', access_token);
+      const msg = await login({ ...values, type });
+      const { success, data } = msg
+      if (success && data.access_token) {
+        localStorage.setItem('token', data.access_token);
         message.success('登录成功！');
         await fetchUserInfo();
         goto();
         return;
       }
       // 如果失败去设置用户错误信息
-      setUserLoginState({ status: 'error', type });
+      setUserLoginState({ success: false });
     } catch (error) {
-      if (error.data && !error.data.success) {
-        setUserLoginState({ status: 'error', type });
-      } else {
+      const { data } = error
+      if (!data) {
         message.error('登录失败，请重试！');
+      } else if (data.success) {
+        setUserLoginState({ success: false });
       }
       localStorage.removeItem('token')
     }
     setSubmitting(false);
   };
-  const { status, type: loginType } = userLoginState;
+  const { success } = userLoginState;
 
   return (
     <div className={styles.container}>
@@ -122,7 +120,7 @@ const Login: React.FC = () => {
               },
             }}
             onFinish={async (values) => {
-              handleSubmit(values as LoginParamsType);
+              handleSubmit(values as API.LoginParams);
             }}
           >
             <Tabs activeKey={type} onChange={setType}>
@@ -142,7 +140,7 @@ const Login: React.FC = () => {
               />
             </Tabs>
 
-            {status === 'error' && loginType === 'account' && (
+            {success === false && type === 'account' && (
               <LoginMessage
                 content={intl.formatMessage({
                   id: 'pages.login.accountLogin.errorMessage',
@@ -178,7 +176,7 @@ const Login: React.FC = () => {
                   name="password"
                   fieldProps={{
                     size: 'large',
-                    prefix: <LockTwoTone className={styles.prefixIcon} />,
+                    prefix: <LockOutlined className={styles.prefixIcon} />,
                   }}
                   placeholder={intl.formatMessage({
                     id: 'pages.login.password.placeholder',
@@ -199,13 +197,13 @@ const Login: React.FC = () => {
               </>
             )}
 
-            {status === 'error' && loginType === 'mobile' && <LoginMessage content="验证码错误" />}
+            {success === false && type === 'mobile' && <LoginMessage content="验证码错误" />}
             {type === 'mobile' && (
               <>
                 <ProFormText
                   fieldProps={{
                     size: 'large',
-                    prefix: <MobileTwoTone className={styles.prefixIcon} />,
+                    prefix: <MobileOutlined className={styles.prefixIcon} />,
                   }}
                   name="mobile"
                   placeholder={intl.formatMessage({
@@ -236,7 +234,7 @@ const Login: React.FC = () => {
                 <ProFormCaptcha
                   fieldProps={{
                     size: 'large',
-                    prefix: <MailTwoTone className={styles.prefixIcon} />,
+                    prefix: <LockOutlined className={styles.prefixIcon} />,
                   }}
                   captchaProps={{
                     size: 'large',
@@ -269,8 +267,10 @@ const Login: React.FC = () => {
                       ),
                     },
                   ]}
-                  onGetCaptcha={async (mobile) => {
-                    const result = await getFakeCaptcha(mobile);
+                  onGetCaptcha={async (phone) => {
+                    const result = await getFakeCaptcha({
+                      phone,
+                    });
                     if (result === false) {
                       return;
                     }

@@ -7,26 +7,25 @@ import { history } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
 import type { ResponseError, RequestOptionsInit } from 'umi-request';
-import { queryCurrent } from './services/user';
-import defaultSettings from '../config/defaultSettings';
+import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
+import { BookOutlined, LinkOutlined } from '@ant-design/icons';
 
-/**
- * 获取用户信息比较慢的时候会展示一个 loading
- */
+/** 获取用户信息比较慢的时候会展示一个 loading */
 export const initialStateConfig = {
   loading: <PageLoading />,
 };
 
 export async function getInitialState(): Promise<{
-  settings?: LayoutSettings;
+  settings?:  Partial<LayoutSettings>;
   currentUser?: API.CurrentUser;
   fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
 }> {
   const fetchUserInfo = async () => {
+    if (!localStorage.getItem('token'))
+      return undefined
     try {
-      if (localStorage.getItem('token')) {
-        return await queryCurrent();
-      }
+      const { data: currentUser } = await queryCurrentUser();
+      return currentUser;
     } catch (error) {
       localStorage.removeItem('token')
       history.push('/user/login');
@@ -39,12 +38,12 @@ export async function getInitialState(): Promise<{
     return {
       fetchUserInfo,
       currentUser,
-      settings: defaultSettings,
+      settings: {},
     };
   }
   return {
     fetchUserInfo,
-    settings: defaultSettings,
+    settings: {},
   };
 }
 
@@ -60,6 +59,28 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
         history.push('/user/login');
       }
     },
+    links: [
+      <>
+        <LinkOutlined />
+        <span
+          onClick={() => {
+            window.open('/umi/plugin/openapi');
+          }}
+        >
+          openAPI 文档
+        </span>
+      </>,
+      <>
+        <BookOutlined />
+        <span
+          onClick={() => {
+            window.open('/~docs');
+          }}
+        >
+          业务组件文档
+        </span>
+      </>,
+    ],
     menuHeaderRender: undefined,
     menuDataRender: () => initialState?.currentUser?.menus || [],
     // 自定义 403 页面
@@ -87,9 +108,7 @@ const codeMessage = {
   504: '网关超时。',
 };
 
-/**
- * 异常处理程序
- */
+/** 异常处理程序 */
 const errorHandler = (error: ResponseError) => {
   const { name, data, response } = error
   if (name === 'BizError') {
