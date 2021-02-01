@@ -93,7 +93,7 @@ const Menu: React.FC = () => {
         actionRef={ref}
         columns={columns}
         pagination={false}
-        expandable={{ expandRowByClick: true }}
+        tableStyle={{ marginBottom: 24 }}
         request={() => list<MenuType>('menu')}
         postData={menus => {
           setMenus([{
