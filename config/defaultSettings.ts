@@ -16,9 +16,6 @@ const Settings: LayoutSettings & {
   pwa: false,
   logo: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
   iconfontUrl: '//at.alicdn.com/t/font_2325568_q3odw9sgj7.js',
-  menu: {
-    locale: false
-  }
 };
 
 export default Settings;
