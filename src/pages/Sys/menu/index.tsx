@@ -1,10 +1,11 @@
-import React, { useRef, useState } from "react";
-import { Button, Popconfirm, TreeSelect, Tag, InputNumber } from "antd";
-import { DataNode } from "rc-tree-select/lib/interface";
-import { PlusOutlined } from "@ant-design/icons";
-import ProForm, { ModalForm, ProFormText, ProFormRadio } from "@ant-design/pro-form";
-import ProTable, { ProColumns, ActionType } from "@ant-design/pro-table";
-import { remove, list, saveOrUpdate } from "@/services/api";
+import React, { useState, useRef } from 'react';
+import { Button, Tag, Popconfirm, TreeSelect, InputNumber } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import { DataNode } from 'rc-tree-select/lib/interface';
+import { PageContainer } from '@ant-design/pro-layout';
+import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
+import ProForm, { ModalForm, ProFormText, ProFormRadio } from '@ant-design/pro-form';
+import { saveOrUpdate, remove, list } from '@/services/api';
 
 export type MenuType = {
   id?: number;
@@ -33,7 +34,7 @@ const Menu: React.FC = () => {
   const [visible, setVisible] = useState(false)
   const ref = useRef<ActionType>()
 
-  const showMenuModalForm = (menu?: MenuType) => {
+  const showModalForm = (menu?: MenuType) => {
     setMenu(menu)
     setVisible(true)
   }
@@ -70,13 +71,12 @@ const Menu: React.FC = () => {
       valueType: 'option',
       align: 'center',
       render: (_, menu) => [
-        !menu.type &&
-        <a key="add" onClick={() => showMenuModalForm({ pid: menu.id })}>新增</a>,
-        <a key="edit" onClick={() => showMenuModalForm(menu)}>编辑</a>,
+        !menu.type && <a key="add" onClick={() => showModalForm({ pid: menu.id })}>新增</a>,
+        <a key="edit" onClick={() => showModalForm(menu)}>编辑</a>,
         <Popconfirm
           key="delete"
-          title={`确认删除${menu.name}？`}
-          onConfirm={async () => await remove('menu', menu.id, ref.current?.reloadAndRest)}
+          title={`确认删除：${menu.name}？`}
+          onConfirm={() => remove('menu', menu.id, ref.current?.reloadAndRest)}
         >
           <a>删除</a>
         </Popconfirm>
@@ -85,7 +85,7 @@ const Menu: React.FC = () => {
   ]
 
   return (
-    <>
+    <PageContainer>
       <ProTable <MenuType, MenuType>
         bordered
         rowKey="id"
@@ -93,6 +93,7 @@ const Menu: React.FC = () => {
         actionRef={ref}
         columns={columns}
         pagination={false}
+        expandable={{ expandRowByClick: true }}
         request={() => list<MenuType>('menu')}
         postData={menus => {
           setMenus([{
@@ -106,18 +107,20 @@ const Menu: React.FC = () => {
           <Button
             type="primary"
             icon={<PlusOutlined />}
-            onClick={() => showMenuModalForm()}
+            onClick={() => showModalForm()}
           >
             新建
           </Button>
         ]}
       />
       <ModalForm
-        layout="inline"
         preserve={false}
         visible={visible}
+        layout="horizontal"
+        labelCol={{ span: 4 }}
+        wrapperCol={{ span: 16 }}
         onVisibleChange={setVisible}
-        title={menu ? '编辑菜单' : '新增菜单'}
+        title={menu?.id ? '编辑菜单' : '新增菜单'}
         onFinish={menu => saveOrUpdate('menu', menu, ref.current?.reloadAndRest)}
       >
         <ProFormText
@@ -126,49 +129,49 @@ const Menu: React.FC = () => {
           initialValue={menu?.id}
         />
         <ProForm.Item
-          label="父菜单"
           name="pid"
+          label="父菜单"
           initialValue={menu?.pid || 0}
         >
-          <TreeSelect treeDefaultExpandAll treeData={menus} />
+          <TreeSelect treeData={menus} treeDefaultExpandAll />
         </ProForm.Item>
         <ProFormText
-          label="菜单名"
           name="name"
+          label="菜单名"
           initialValue={menu?.name}
           rules={[{ required: true }]}
         />
         <ProFormText
-          label="路径"
           name="path"
+          label="路径"
           initialValue={menu?.path}
         />
         <ProFormText
-          label="图标"
           name="icon"
+          label="图标"
           initialValue={menu?.icon}
         />
         <ProFormText
-          label="权限标识"
           name="permission"
+          label="权限标识"
           initialValue={menu?.permission}
         />
         <ProFormRadio.Group
-          label="类型"
           name="type"
+          label="类型"
           radioType="button"
-          initialValue={menu?.type}
+          initialValue={menu?.type || 0}
           options={[{ label: '菜单', value: 0 }, { label: '权限', value: 1 }]}
         />
         <ProForm.Item
-          label="排序"
           name="sort"
+          label="排序"
           initialValue={menu?.sort || 1}
         >
           <InputNumber min={1} max={999} />
         </ProForm.Item>
       </ModalForm>
-    </>
+    </PageContainer>
   )
 }
 
