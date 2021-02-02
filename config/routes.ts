@@ -10,10 +10,10 @@
   {
     path: '/account',
     routes: [
-      // {
-      //   path: '/account/settings',
-      //   component: 'Account/settings'
-      // },
+      {
+        path: '/account/settings',
+        component: 'Account/Settings'
+      },
       {
         component: '404'
       }
@@ -24,17 +24,17 @@
     routes: [
       {
         path: '/sys/user',
-        component: 'Sys/user',
+        component: 'Sys/User',
         access: 'userRouteFilter'
       },
       {
         path: '/sys/role',
-        component: 'Sys/role',
+        component: 'Sys/Role',
         access: 'roleRouteFilter'
       },
       {
         path: '/sys/menu',
-        component: 'Sys/menu',
+        component: 'Sys/Menu',
         access: 'menuRouteFilter'
       },
       {

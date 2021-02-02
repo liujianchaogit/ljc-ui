@@ -5,7 +5,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { ModalForm, ProFormText, ProFormRadio , ProFormSelect } from '@ant-design/pro-form';
-import { RoleType } from '@/pages/Sys/role';
+import { RoleType } from '@/pages/Sys/Role';
 import { saveOrUpdate, remove, list, page } from '@/services/api';
 
 export type UserType = {

@@ -6,7 +6,7 @@ import { DataNode } from 'rc-tree/lib/interface';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProForm, { ModalForm, ProFormText } from '@ant-design/pro-form';
-import { MenuType } from '@/pages/Sys/menu'
+import { MenuType } from '@/pages/Sys/Menu'
 import { saveOrUpdate, remove, list, page } from '@/services/api';
 
 export type RoleType = {
