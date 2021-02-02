@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { request, useRequest } from 'umi';
 import { Button, Popconfirm, Tree } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { DataNode } from 'rc-tree/lib/interface';
+import { DataNode } from 'antd/es/tree';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProForm, { ModalForm, ProFormText } from '@ant-design/pro-form';
@@ -94,6 +94,7 @@ const Role: React.FC = () => {
         ]}
       />
       <ModalForm
+        hideRequiredMark
         preserve={false}
         visible={visible}
         layout='horizontal'

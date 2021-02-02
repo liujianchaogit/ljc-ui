@@ -114,6 +114,7 @@ const Menu: React.FC = () => {
         ]}
       />
       <ModalForm
+        hideRequiredMark
         preserve={false}
         visible={visible}
         layout="horizontal"
