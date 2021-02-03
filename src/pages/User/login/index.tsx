@@ -40,7 +40,7 @@ const goto = () => {
 
 const Login: React.FC = () => {
   const [submitting, setSubmitting] = useState(false);
-  const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
+  const [userLoginState, setUserLoginState] = useState<{ status?: string, type?: string }>({});
   const [type, setType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');
 
@@ -60,8 +60,7 @@ const Login: React.FC = () => {
     setSubmitting(true);
     try {
       // 登录
-      const msg = await login({ ...values, type });
-      const { success, data } = msg
+      const { success, data } = await login({ ...values, type });
       if (success && data.access_token) {
         localStorage.setItem('token', data.access_token);
         message.success('登录成功！');
@@ -70,19 +69,19 @@ const Login: React.FC = () => {
         return;
       }
       // 如果失败去设置用户错误信息
-      setUserLoginState({ success: false });
+      setUserLoginState({ status: 'error', type: type });
     } catch (error) {
       const { data } = error
       if (!data) {
         message.error('登录失败，请重试！');
       } else if (data.success) {
-        setUserLoginState({ success: false });
+        setUserLoginState({ status: 'error', type: type });
       }
       localStorage.removeItem('token')
     }
     setSubmitting(false);
   };
-  const { success } = userLoginState;
+  const { status, type: loginType } = userLoginState;
 
   return (
     <div className={styles.container}>
@@ -140,7 +139,7 @@ const Login: React.FC = () => {
               />
             </Tabs>
 
-            {success === false && type === 'account' && (
+            {status === 'error' && loginType === 'account' && (
               <LoginMessage
                 content={intl.formatMessage({
                   id: 'pages.login.accountLogin.errorMessage',
@@ -197,7 +196,7 @@ const Login: React.FC = () => {
               </>
             )}
 
-            {success === false && type === 'mobile' && <LoginMessage content="验证码错误" />}
+            {status === 'error' && loginType === 'mobile' && <LoginMessage content="验证码错误" />}
             {type === 'mobile' && (
               <>
                 <ProFormText
@@ -268,10 +267,10 @@ const Login: React.FC = () => {
                     },
                   ]}
                   onGetCaptcha={async (phone) => {
-                    const result = await getCaptcha({
+                    const { success } = await getCaptcha({
                       phone,
                     });
-                    if (result === false) {
+                    if (!success) {
                       return;
                     }
                     message.success('获取验证码成功！验证码为：1234');
