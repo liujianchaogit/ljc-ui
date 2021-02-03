@@ -1,18 +1,8 @@
-import { Tag, Space } from 'antd';
-import { QuestionCircleOutlined } from '@ant-design/icons';
+import { Space } from 'antd';
 import React from 'react';
 import { useModel, SelectLang } from 'umi';
 import Avatar from './AvatarDropdown';
-import HeaderSearch from '../HeaderSearch';
 import styles from './index.less';
-
-export type SiderTheme = 'light' | 'dark';
-
-const ENVTagColor = {
-  dev: 'orange',
-  test: 'green',
-  pre: '#87d068',
-};
 
 const GlobalHeaderRight: React.FC = () => {
   const { initialState } = useModel('@@initialState');

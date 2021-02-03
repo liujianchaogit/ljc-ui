@@ -59,7 +59,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
       }
     },
     menuHeaderRender: undefined,
-    menuDataRender: () => initialState?.currentUser?.menus || [],
+    menuDataRender: menuData => initialState?.currentUser?.menus || menuData,
     // 自定义 403 页面
     // unAccessible: <div>unAccessible</div>,
     ...initialState?.settings,

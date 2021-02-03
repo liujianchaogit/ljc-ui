@@ -34,7 +34,7 @@ export async function remove(type: string, id?: number, refresh?: () => void) {
 }
 
 export async function list<T extends ParamsType>(type: string) {
-  return await request<API.Response<T[]>>(`/${type}/list`)
+  return request<API.Response<T[]>>(`/${type}/list`)
 }
 
 export async function page<T extends ParamsType>(type: string, params: T & {
@@ -42,5 +42,5 @@ export async function page<T extends ParamsType>(type: string, params: T & {
   current?: number;
   keyword?: string;
 }, sort?: Record<string, SortOrder>, filter?: Record<string, React.ReactText[]>) {
-  return await request<Partial<RequestData<T>>>(`/${type}/page`, { params })
+  return request<Partial<RequestData<T>>>(`/${type}/page`, { params })
 }
