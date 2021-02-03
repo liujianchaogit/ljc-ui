@@ -7,7 +7,7 @@ import { history } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
 import type { ResponseError, RequestOptionsInit } from 'umi-request';
-import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
+import { getUserInfo } from '@/services/sys/user';
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
 export const initialStateConfig = {
@@ -23,7 +23,7 @@ export async function getInitialState(): Promise<{
     if (!localStorage.getItem('token'))
       return undefined
     try {
-      const { data: currentUser } = await queryCurrentUser();
+      const { data: currentUser } = await getUserInfo();
       return currentUser;
     } catch (error) {
       localStorage.removeItem('token')
