@@ -1,10 +1,10 @@
 // src/access.ts
-export default function access(initialState: { currentUser?: API.CurrentUser | undefined }) {
-  const { currentUser } = initialState || {};
+export default function access(initialState: { currentUser?: API.CurrentUser }) {
+  const { currentUser } = initialState;
   return {
-    userRouteFilter: currentUser?.permissions && currentUser.permissions.indexOf('sys:user') > -1,
-    roleRouteFilter: currentUser?.permissions && currentUser.permissions.indexOf('sys:role') > -1,
-    menuRouteFilter: currentUser?.permissions && currentUser.permissions.indexOf('sys:menu') > -1,
-    fcwRouteFilter: currentUser?.permissions && currentUser.permissions.indexOf('fcw') > -1
-  };
+    userRouteFilter: currentUser?.permissions && currentUser.permissions.includes('sys:user'),
+    roleRouteFilter: currentUser?.permissions && currentUser.permissions.includes('sys:role'),
+    menuRouteFilter: currentUser?.permissions && currentUser.permissions.includes('sys:menu'),
+    fcwRouteFilter: currentUser?.permissions && currentUser.permissions.includes('fcw')
+  }
 }
