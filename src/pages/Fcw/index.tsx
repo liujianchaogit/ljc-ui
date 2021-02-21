@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { request, useRequest, Link } from "umi";
 import { TabPaneProps } from "antd/lib/tabs";
 import useAntdMediaQuery from "use-media-antd-query";
-import { Menu, Spin } from "antd";
+import {Button, Menu, Spin} from "antd";
 import styles from "./index.less";
 
 const fcwList: (TabPaneProps & {
@@ -35,6 +35,10 @@ const fcwList: (TabPaneProps & {
   {
     tab: "国产自拍",
     key: "27f8a5c9ce83cbfa7b70fc5c9a73a082"
+  },
+  {
+    tab: "韩国综合",
+    key: "bd2c9c41dffe88e87f713b64b60cc966"
   }
 ];
 
@@ -91,6 +95,10 @@ const Fcw: React.FC = () => {
             })
           }
         </Menu>
+        <Button onClick={() =>play('52366')}>52366</Button>
+        <Button onClick={() =>play('776')}>58947</Button>
+        <Button onClick={() =>play('59048')}>58947</Button>
+        <Button onClick={() =>play('57407')}>57407</Button>
         <Spin spinning={loading || playLoading}>
           <div className={styles.fd}>
             {
