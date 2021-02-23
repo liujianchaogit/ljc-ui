@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { request, useRequest, Link } from "umi";
+import { request, useRequest, Link, Helmet } from "umi";
 import { TabPaneProps } from "antd/lib/tabs";
 import useAntdMediaQuery from "use-media-antd-query";
 import {Button, Menu, Spin} from "antd";
@@ -71,70 +71,75 @@ const Fcw: React.FC = () => {
   const isMobile = (colSize === "sm" || colSize === "xs");
 
   return (
-    <div className={styles.fcw} ref={containerRef}>
-      <div className={styles.content}>
-        <Menu
-          theme={"dark"}
-          mode={"horizontal"}
-          selectedKeys={[activeKey]}
-          onClick={async m => {
-            setPage(1);
-            setActiveKey(m.key as string);
-          }}
-        >
-          <Menu.Item>
-            <Link to="/">LJC Design</Link>
-          </Menu.Item>
-          {
-            fcwList.map(x => {
-              return (
-                <Menu.Item key={x.key}>
-                  <span>{x.tab}</span>
-                </Menu.Item>
-              );
-            })
-          }
-        </Menu>
-        <Button onClick={() =>play('52366')}>52366</Button>
-        <Button onClick={() =>play('776')}>58947</Button>
-        <Button onClick={() =>play('59048')}>58947</Button>
-        <Button onClick={() =>play('57407')}>57407</Button>
-        <Spin spinning={loading || playLoading}>
-          <div className={styles.fd}>
+    <>
+      <Helmet>
+        <meta name="referrer" content="no-referrer" />
+      </Helmet>
+      <div className={styles.fcw} ref={containerRef}>
+        <div className={styles.content}>
+          <Menu
+            theme={"dark"}
+            mode={"horizontal"}
+            selectedKeys={[activeKey]}
+            onClick={async m => {
+              setPage(1);
+              setActiveKey(m.key as string);
+            }}
+          >
+            <Menu.Item>
+              <Link to="/">LJC Design</Link>
+            </Menu.Item>
             {
-              data?.list.map((p, index) => {
+              fcwList.map(x => {
                 return (
-                  <div
-                    onClick={() => play(p.id)}
-                    className={styles.card} style={{ width: isMobile ? "48%" : "18%" }}
-                    key={index}
-                  >
-                    <div>
-                      <img alt={p.id} src={p.img} />
-                    </div>
-                    <span>{p.title}</span>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}>
-                      <span>{p.duration}</span>
-                      <span>{p.added}</span>
-                    </div>
-                  </div>
+                  <Menu.Item key={x.key}>
+                    <span>{x.tab}</span>
+                  </Menu.Item>
                 );
               })
             }
-            {!isMobile &&
-            [...Array(5 - data?.list.length % 5)].map((item, index) => {
-              return (
-                <div style={{ width: isMobile ? "48%" : "18%" }} key={index}></div>
-              );
-            })
-            }
-          </div>
-        </Spin>
-        <Spin spinning={loadingMore}>
-          <div style={{ height: 50, textAlign: "center" }}></div>
-        </Spin>
+          </Menu>
+          <Button onClick={() =>play('52366')}>52366</Button>
+          <Button onClick={() =>play('776')}>58947</Button>
+          <Button onClick={() =>play('59048')}>58947</Button>
+          <Button onClick={() =>play('57407')}>57407</Button>
+          <Spin spinning={loading || playLoading}>
+            <div className={styles.fd}>
+              {
+                data?.list.map((p, index) => {
+                  return (
+                    <div
+                      onClick={() => play(p.id)}
+                      className={styles.card} style={{ width: isMobile ? "48%" : "18%" }}
+                      key={index}
+                    >
+                      <div>
+                        <img alt={p.id} src={p.img} />
+                      </div>
+                      <span>{p.title}</span>
+                      <div style={{ display: "flex", justifyContent: "space-between" }}>
+                        <span>{p.duration}</span>
+                        <span>{p.added}</span>
+                      </div>
+                    </div>
+                  );
+                })
+              }
+              {!isMobile &&
+              [...Array(5 - data?.list.length % 5)].map((item, index) => {
+                return (
+                  <div style={{ width: isMobile ? "48%" : "18%" }} key={index}></div>
+                );
+              })
+              }
+            </div>
+          </Spin>
+          <Spin spinning={loadingMore}>
+            <div style={{ height: 50, textAlign: "center" }}></div>
+          </Spin>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -50,7 +50,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
   return {
     rightContentRender: () => <RightContent />,
     disableContentMargin: false,
-    footerRender: () => <Footer />,
+    footerRender: () => false,
     onPageChange: () => {
       const { location } = history;
       // 如果没有登录，重定向到 login
