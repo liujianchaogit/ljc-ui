@@ -99,10 +99,8 @@ const Fcw: React.FC = () => {
               })
             }
           </Menu>
-          <Button onClick={() =>play('52366')}>52366</Button>
-          <Button onClick={() =>play('776')}>58947</Button>
-          <Button onClick={() =>play('59048')}>58947</Button>
-          <Button onClick={() =>play('57407')}>57407</Button>
+          <Button onClick={() =>window.open('https://www.fcww33.com/get_file/1/0408d167b66867afcdc8fbf40bec82e6762a8eca13/59000/59053/59053.mp4')}>A</Button>
+          <Button onClick={() =>window.open('https://www.fcww33.com/get_file/1/254832398923a9313ed4c553d774e288061fb06ac0/59000/59632/59632.mp4')}>B</Button>
           <Spin spinning={loading || playLoading}>
             <div className={styles.fd}>
               {

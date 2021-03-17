@@ -127,6 +127,6 @@ const authHeaderInterceptor = (url: string, options: RequestOptionsInit) => {
 
 export const request: RequestConfig = {
   errorHandler,
-  prefix: 'http://localhost:8080',
+  prefix: 'http://121.4.241.251:8080',
   requestInterceptors: [authHeaderInterceptor]
 };

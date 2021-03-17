@@ -17,5 +17,6 @@ export default defineConfig({
   routes,
   theme: {
     'primary-color': defaultSettings.primaryColor,
-  }
+  },
+  history: { type: 'hash' },
 });
