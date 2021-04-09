@@ -16,10 +16,10 @@ interface PAGE_NAME_UPPER_CAMEL_CASEState {
 }
 
 const menuMap: { [key: string]: React.ReactNode } = {
-  base: <FormattedMessage id="app.settings.menuMap.basic" defaultMessage="基本设置"/>,
-  security: <FormattedMessage id="app.settings.menuMap.security" defaultMessage="安全设置"/>,
-  binding: <FormattedMessage id="app.settings.menuMap.binding" defaultMessage="账号绑定"/>,
-  notification: <FormattedMessage id="app.settings.menuMap.notification" defaultMessage="新消息通知"/>
+  base: <FormattedMessage id="app.settings.menuMap.basic" defaultMessage="基本设置" />,
+  security: <FormattedMessage id="app.settings.menuMap.security" defaultMessage="安全设置" />,
+  binding: <FormattedMessage id="app.settings.menuMap.binding" defaultMessage="账号绑定" />,
+  notification: <FormattedMessage id="app.settings.menuMap.notification" defaultMessage="新消息通知" />
 }
 
 const getMenu = () => Object.keys(menuMap).map(item => <Menu.Item key={item}>{menuMap[item]}</Menu.Item>)
