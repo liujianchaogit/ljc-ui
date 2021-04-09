@@ -1,15 +1,14 @@
-import React from 'react';
 import type { Settings as LayoutSettings } from '@ant-design/pro-layout';
 import { PageLoading } from '@ant-design/pro-layout';
 import { notification } from 'antd';
 import type { RequestConfig, RunTimeLayoutConfig } from 'umi';
 import { history } from 'umi';
 import RightContent from '@/components/RightContent';
-import Footer from '@/components/Footer';
 import type { ResponseError, RequestOptionsInit } from 'umi-request';
 import { getUserInfo } from '@/services/sys/user';
 
-/** 获取用户信息比较慢的时候会展示一个 loading */
+const loginPath = '/user/login';
+
 export const initialStateConfig = {
   loading: <PageLoading />,
 };
@@ -27,12 +26,12 @@ export async function getInitialState(): Promise<{
       return currentUser;
     } catch (error) {
       localStorage.removeItem('token')
-      history.push('/user/login');
+      history.push(loginPath);
     }
     return undefined;
   };
   // 如果是登录页面，不执行
-  if (history.location.pathname !== '/user/login') {
+  if (history.location.pathname !== loginPath) {
     const currentUser = await fetchUserInfo();
     return {
       fetchUserInfo,
@@ -54,8 +53,8 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     onPageChange: () => {
       const { location } = history;
       // 如果没有登录，重定向到 login
-      if (!initialState?.currentUser && location.pathname !== '/user/login') {
-        history.push('/user/login');
+      if (!initialState?.currentUser && location.pathname !== loginPath) {
+        history.push(loginPath);
       }
     },
     menuHeaderRender: undefined,
@@ -85,7 +84,6 @@ const codeMessage = {
   504: '网关超时。',
 };
 
-/** 异常处理程序 */
 const errorHandler = (error: ResponseError) => {
   const { name, data, response } = error
   if (name === 'BizError') {
