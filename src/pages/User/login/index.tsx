@@ -40,7 +40,7 @@ const goto = () => {
 
 const Login: React.FC = () => {
   const [submitting, setSubmitting] = useState(false);
-  const [userLoginState, setUserLoginState] = useState<{ status?: string, type?: string }>({});
+  const [userLoginState, setUserLoginState] = useState<string>();
   const [type, setType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');
 
@@ -58,30 +58,25 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (values: API.LoginParams) => {
     setSubmitting(true);
+    setUserLoginState(undefined);
     try {
       // 登录
-      const { success, data } = await login({ ...values, type });
-      if (success && data.access_token) {
-        localStorage.setItem('token', data.access_token);
-        message.success('登录成功！');
-        await fetchUserInfo();
-        goto();
-        return;
-      }
-      // 如果失败去设置用户错误信息
-      setUserLoginState({ status: 'error', type: type });
+      await login({ ...values, type });
+      message.success('登录成功！');
+      await fetchUserInfo();
+      goto();
+      return;
     } catch (error) {
-      const { data } = error
-      if (!data) {
+      const { name, data } = error
+      if (name === 'BizError') {
+        setUserLoginState(data.errorMessage);
+      } else {
         message.error('登录失败，请重试！');
-      } else if (data.success) {
-        setUserLoginState({ status: 'error', type: type });
       }
-      localStorage.removeItem('token')
     }
     setSubmitting(false);
   };
-  const { status, type: loginType } = userLoginState;
+  // const { status, type: loginType } = userLoginState;
 
   return (
     <div className={styles.container}>
@@ -139,12 +134,9 @@ const Login: React.FC = () => {
               />
             </Tabs>
 
-            {status === 'error' && loginType === 'account' && (
+            {userLoginState && (
               <LoginMessage
-                content={intl.formatMessage({
-                  id: 'pages.login.accountLogin.errorMessage',
-                  defaultMessage: '账户或密码错误（admin/ant.design)',
-                })}
+                content={userLoginState}
               />
             )}
             {type === 'account' && (
@@ -196,7 +188,6 @@ const Login: React.FC = () => {
               </>
             )}
 
-            {status === 'error' && loginType === 'mobile' && <LoginMessage content="验证码错误" />}
             {type === 'mobile' && (
               <>
                 <ProFormText

@@ -1,9 +1,9 @@
 import { request } from 'umi'
 
 export async function login(params: API.LoginParams) {
-  return request<API.Response<API.Token>>('/oauth/token', {
+  return request<API.Response>('/login', {
     method: 'POST',
-    params: { ...params, grant_type: 'password' },
+    params,
     errorHandler: undefined
   })
 }

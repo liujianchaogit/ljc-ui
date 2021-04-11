@@ -4,34 +4,38 @@ import { notification } from 'antd';
 import type { RequestConfig, RunTimeLayoutConfig } from 'umi';
 import { history } from 'umi';
 import RightContent from '@/components/RightContent';
-import type { ResponseError, RequestOptionsInit } from 'umi-request';
+import Footer from '@/components/Footer';
+import type { ResponseError } from 'umi-request';
 import { getUserInfo } from '@/services/sys/user';
+import Cookies from "js-cookie";
 
 const loginPath = '/user/login';
 
+/** 获取用户信息比较慢的时候会展示一个 loading */
 export const initialStateConfig = {
   loading: <PageLoading />,
 };
 
+/**
+ * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
+ * */
 export async function getInitialState(): Promise<{
   settings?:  Partial<LayoutSettings>;
   currentUser?: API.CurrentUser;
   fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
 }> {
   const fetchUserInfo = async () => {
-    if (!localStorage.getItem('token'))
-      return undefined
     try {
       const { data: currentUser } = await getUserInfo();
       return currentUser;
     } catch (error) {
-      localStorage.removeItem('token')
+      Cookies.remove('JSESSIONID')
       history.push(loginPath);
     }
     return undefined;
   };
   // 如果是登录页面，不执行
-  if (history.location.pathname !== loginPath) {
+  if (history.location.pathname !== loginPath && Cookies.get('JSESSIONID')) {
     const currentUser = await fetchUserInfo();
     return {
       fetchUserInfo,
@@ -45,11 +49,12 @@ export async function getInitialState(): Promise<{
   };
 }
 
+// https://umijs.org/zh-CN/plugins/plugin-layout
 export const layout: RunTimeLayoutConfig = ({ initialState }) => {
   return {
     rightContentRender: () => <RightContent />,
     disableContentMargin: false,
-    footerRender: () => false,
+    footerRender: () => <Footer />,
     onPageChange: () => {
       const { location } = history;
       // 如果没有登录，重定向到 login
@@ -84,6 +89,9 @@ const codeMessage = {
   504: '网关超时。',
 };
 
+/** 异常处理程序
+ * @see https://beta-pro.ant.design/docs/request-cn
+ */
 const errorHandler = (error: ResponseError) => {
   const { name, data, response } = error
   if (name === 'BizError') {
@@ -112,19 +120,9 @@ const errorHandler = (error: ResponseError) => {
   throw error;
 };
 
-const authHeaderInterceptor = (url: string, options: RequestOptionsInit) => {
-  const token = localStorage.getItem('token');
-  const authHeader = {
-    Authorization: token ? `Bearer ${token}` : 'Basic bGpjOmxqYw==',
-  };
-  return {
-    url: `${url}`,
-    options: { ...options, interceptors: true, headers: authHeader },
-  };
-};
-
+// https://umijs.org/zh-CN/plugins/plugin-request
 export const request: RequestConfig = {
   errorHandler,
-  prefix: 'http://121.4.241.251:8080',
-  requestInterceptors: [authHeaderInterceptor]
+  prefix: 'http://localhost:8080',
+  credentials: 'include'
 };

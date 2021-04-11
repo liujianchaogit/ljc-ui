@@ -22,10 +22,6 @@ declare namespace API {
     permissions?: string[]
   };
 
-  type Token = {
-    access_token?: string;
-  };
-
   type LoginParams = {
     username?: string;
     password?: string;
