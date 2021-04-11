@@ -7,7 +7,7 @@ import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
 import type { ResponseError } from 'umi-request';
 import { getUserInfo } from '@/services/sys/user';
-import Cookies from "js-cookie";
+import Cookies from 'js-cookie'
 
 const loginPath = '/user/login';
 

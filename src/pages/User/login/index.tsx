@@ -76,7 +76,6 @@ const Login: React.FC = () => {
     }
     setSubmitting(false);
   };
-  // const { status, type: loginType } = userLoginState;
 
   return (
     <div className={styles.container}>
@@ -114,7 +113,7 @@ const Login: React.FC = () => {
               },
             }}
             onFinish={async (values) => {
-              handleSubmit(values as API.LoginParams);
+              await handleSubmit(values as API.LoginParams);
             }}
           >
             <Tabs activeKey={type} onChange={setType}>
