@@ -16,8 +16,7 @@ export async function getCaptcha(params: { phone?: string }) {
 }
 
 export async function logout(options?: { [key: string]: any }) {
-  // return request<Record<string, any>>('/api/login/outLogin', {
-  //   method: 'POST',
-  //   ...(options || {}),
-  // });
+  return request<Record<string, any>>('/logout', {
+    method: 'POST'
+  });
 }
