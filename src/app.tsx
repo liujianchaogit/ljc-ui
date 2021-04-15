@@ -3,10 +3,9 @@ import { PageLoading } from '@ant-design/pro-layout';
 import { notification } from 'antd';
 import type { RequestConfig, RunTimeLayoutConfig } from 'umi';
 import { history } from 'umi';
-import RightContent from '@/components/RightContent';
-import Footer from '@/components/Footer';
+import RightContent from '@@/plugin-liujianchao-main/components/RightContent';
 import type { ResponseError } from 'umi-request';
-import { getUserInfo } from '@/services/sys/user';
+import { getUserInfo } from '@@/plugin-liujianchao-main/services/sys';
 import Cookies from 'js-cookie'
 
 const loginPath = '/user/login';
@@ -54,7 +53,6 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
   return {
     rightContentRender: () => <RightContent />,
     disableContentMargin: false,
-    footerRender: () => <Footer />,
     onPageChange: () => {
       const { location } = history;
       // 如果没有登录，重定向到 login

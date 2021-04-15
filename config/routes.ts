@@ -20,37 +20,6 @@
     ]
   },
   {
-    path: '/sys',
-    routes: [
-      {
-        name: 'sys:user',
-        path: '/sys/user',
-        component: 'Sys/User',
-        access: 'userRouteFilter'
-      },
-      {
-        name: 'sys:role',
-        path: '/sys/role',
-        component: 'Sys/Role',
-        access: 'roleRouteFilter'
-      },
-      {
-        name: 'sys:menu',
-        path: '/sys/menu',
-        component: 'Sys/Menu',
-        access: 'menuRouteFilter'
-      },
-      {
-        component: '404'
-      }
-    ]
-  },
-  {
-    path: '/user/login',
-    component: 'User/login',
-    layout: false
-  },
-  {
     name: 'fcw',
     path: '/fcw',
     component: 'Fcw',
