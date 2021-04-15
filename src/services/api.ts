@@ -1,5 +1,5 @@
 import React from 'react'
-import { request } from '@@/plugin-request/request'
+import { request } from 'umi'
 import { message } from 'antd'
 import { SortOrder } from 'antd/lib/table/interface'
 import { RequestData } from '@ant-design/pro-table'
