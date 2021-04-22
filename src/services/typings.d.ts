@@ -19,7 +19,7 @@ declare namespace API {
     address?: string;
     phone?: string;
     menus?: [];
-    permissions?: string[]
+    perms?: string[]
   };
 
   type LoginParams = {

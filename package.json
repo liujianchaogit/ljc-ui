@@ -22,7 +22,7 @@
     "@ant-design/pro-layout": "^6.16.0",
     "@ant-design/pro-table": "^2.33.0",
     "@types/classnames": "^2.2.11",
-    "@umijs/plugin-liujianchao-admin": "file:umijs-plugin-liujianchao-admin-1.0.0.tgz",
+    "@umijs/plugin-ljc-admin": "file:umijs-plugin-ljc-admin-1.0.0.tgz",
     "@umijs/preset-react": "1.x",
     "js-cookie": "^2.2.1",
     "umi": "^3.4.8"

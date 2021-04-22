@@ -15,7 +15,7 @@ const Settings: LayoutSettings & {
   title: 'LJC Design Pro',
   pwa: false,
   logo: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
-  iconfontUrl: '//at.alicdn.com/t/font_2325568_q3odw9sgj7.js',
+  iconfontUrl: '//at.alicdn.com/t/font_2325568_r39e4ou7y1.js',
 };
 
 export default Settings;
