@@ -2,8 +2,9 @@ import React, { useState, useRef } from "react";
 import { request, useRequest, Link, Helmet } from "umi";
 import { TabPaneProps } from "antd/lib/tabs";
 import useAntdMediaQuery from "use-media-antd-query";
-import {Button, Menu, Spin} from "antd";
+import {Menu, Spin} from "antd";
 import styles from "./index.less";
+import { FieldTimeOutlined, CalendarOutlined } from '@ant-design/icons';
 
 const fcwList: (TabPaneProps & {
   key?: React.ReactText;
@@ -60,7 +61,9 @@ const Fcw: React.FC = () => {
     setPlayLoading(true)
     try {
       const { data } = await request('/fcw/mp4', { params: { id } })
-      data && window.open(data);
+      data && window.open()?.document.write(`<body style="background: black; margin: 0">
+                    <iframe src=\'${data}\' width=\'100%\' height=\'100%\' frameborder></iframe>
+                 </body>`);
     } finally {
       setPlayLoading(false)
     }
@@ -99,25 +102,23 @@ const Fcw: React.FC = () => {
               })
             }
           </Menu>
-          <Button onClick={() =>window.open('https://www.fcww33.com/get_file/1/0408d167b66867afcdc8fbf40bec82e6762a8eca13/59000/59053/59053.mp4')}>A</Button>
-          <Button onClick={() =>window.open('https://www.fcww33.com/get_file/1/254832398923a9313ed4c553d774e288061fb06ac0/59000/59632/59632.mp4')}>B</Button>
           <Spin spinning={loading || playLoading}>
             <div className={styles.fd}>
               {
-                data?.list.map((p, index) => {
+                data?.list.map((p: any, index: number) => {
                   return (
                     <div
                       onClick={() => play(p.id)}
-                      className={styles.card} style={{ width: isMobile ? "48%" : "18%" }}
+                      className={styles.card} style={{ width: isMobile ? "48%" : "19%" }}
                       key={index}
                     >
-                      <div>
-                        <img alt={p.id} src={p.img} />
-                      </div>
-                      <span>{p.title}</span>
-                      <div style={{ display: "flex", justifyContent: "space-between" }}>
-                        <span>{p.duration}</span>
-                        <span>{p.added}</span>
+                      <img alt={p.id} src={p.img} />
+                      <div style={{padding: '10px'}}>
+                        <span className={styles.title}>{p.title}</span>
+                        <div className={styles.desc} >
+                          <span><FieldTimeOutlined /> {p.duration}</span>
+                          <span><CalendarOutlined /> {p.added}</span>
+                        </div>
                       </div>
                     </div>
                   );
@@ -126,14 +127,14 @@ const Fcw: React.FC = () => {
               {!isMobile &&
               [...Array(5 - data?.list.length % 5)].map((item, index) => {
                 return (
-                  <div style={{ width: isMobile ? "48%" : "18%" }} key={index}></div>
+                  <div style={{width: isMobile ? "48%" : "18%"}} key={index} />
                 );
               })
               }
             </div>
           </Spin>
           <Spin spinning={loadingMore}>
-            <div style={{ height: 50, textAlign: "center" }}></div>
+            <div style={{height: 50, textAlign: "center"}} />
           </Spin>
         </div>
       </div>

@@ -97,7 +97,7 @@ export const request: RequestConfig = {
     }
     throw error;
   },
-  prefix: 'http://localhost:8080',
+  prefix: API_URL,
   credentials: 'include'
 };
 

@@ -19,4 +19,5 @@ export default defineConfig({
     'primary-color': defaultSettings.primaryColor,
   },
   history: { type: 'hash' },
+  define: { API_URL: 'http://121.4.241.251:9090' }
 });
