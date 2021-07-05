@@ -3,9 +3,9 @@ import { PageLoading } from '@ant-design/pro-layout';
 import { notification } from 'antd';
 import type { RequestConfig, RunTimeLayoutConfig } from 'umi';
 import { getIntl, getLocale, history } from 'umi';
-import RightContent from '@@/plugin-ljc-main/components/RightContent';
+import RightContent from '@umijs/plugin-ljc-admin/src/components/RightContent';
 import type { ResponseError } from 'umi-request';
-import { getUserInfo } from '@@/plugin-ljc-main/services/sys';
+import { getUserInfo } from '@umijs/plugin-ljc-admin/src/services/sys';
 import Cookies from 'js-cookie'
 
 const loginPath = '/user/login';
