@@ -1,11 +1,9 @@
 ﻿export default [
   {
-    path: '/',
-    redirect: '/welcome'
-  },
-  {
     path: '/welcome',
-    component: 'Welcome'
+    name: 'welcome',
+    icon: 'smile',
+    component: './Welcome',
   },
   {
     path: '/account',
@@ -27,6 +25,10 @@
     access: 'fcwRouteFilter'
   },
   {
-    component: '404'
-  }
-]
+    path: '/',
+    redirect: '/welcome',
+  },
+  {
+    component: './404',
+  },
+];

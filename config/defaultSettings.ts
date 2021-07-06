@@ -16,6 +16,7 @@ const Settings: LayoutSettings & {
   pwa: false,
   logo: 'logo.svg',
   iconfontUrl: 'font_2325568_r39e4ou7y1.js',
+  menu: { locale: false }
 };
 
 export default Settings;
