@@ -3,7 +3,7 @@
     path: '/welcome',
     name: 'welcome',
     icon: 'smile',
-    component: './Welcome',
+    component: './Welcome'
   },
   {
     path: '/account',
@@ -26,9 +26,9 @@
   },
   {
     path: '/',
-    redirect: '/welcome',
+    redirect: '/welcome'
   },
   {
-    component: './404',
-  },
-];
+    component: './404'
+  }
+]

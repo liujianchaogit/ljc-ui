@@ -1,50 +1,50 @@
-import type { Settings as LayoutSettings } from '@ant-design/pro-layout';
-import { PageLoading } from '@ant-design/pro-layout';
-import { notification } from 'antd';
-import type { RequestConfig, RunTimeLayoutConfig } from 'umi';
-import { history } from 'umi';
-import RightContent from '@umijs/plugin-ljc-admin/src/components/RightContent';
-import { getUserInfo } from '@umijs/plugin-ljc-admin/src/services/sys';
+import type { Settings as LayoutSettings } from '@ant-design/pro-layout'
+import { PageLoading } from '@ant-design/pro-layout'
+import { notification } from 'antd'
+import type { RequestConfig, RunTimeLayoutConfig } from 'umi'
+import { history } from 'umi'
+import RightContent from '@umijs/plugin-ljc-admin/src/components/RightContent'
+import { getUserInfo } from '@umijs/plugin-ljc-admin/src/services/sys'
 import Cookies from 'js-cookie'
 
-const loginPath = '/user/login';
+const loginPath = '/user/login'
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
 export const initialStateConfig = {
-  loading: <PageLoading />,
-};
+  loading: <PageLoading />
+}
 
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
  * */
 export async function getInitialState(): Promise<{
-  settings?: Partial<LayoutSettings>;
-  currentUser?: API.CurrentUser;
-  fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
+  settings?: Partial<LayoutSettings>
+  currentUser?: API.CurrentUser
+  fetchUserInfo?: () => Promise<API.CurrentUser | undefined>
 }> {
   const fetchUserInfo = async () => {
     try {
-      const { data: currentUser } = await getUserInfo();
-      return currentUser;
+      const { data: currentUser } = await getUserInfo()
+      return currentUser
     } catch (error) {
       Cookies.remove('JSESSIONID')
-      history.push(loginPath);
+      history.push(loginPath)
     }
-    return undefined;
-  };
+    return undefined
+  }
   // 如果是登录页面，不执行
   if (history.location.pathname !== loginPath && Cookies.get('JSESSIONID')) {
-    const currentUser = await fetchUserInfo();
+    const currentUser = await fetchUserInfo()
     return {
       fetchUserInfo,
       currentUser,
-      settings: {},
-    };
+      settings: {}
+    }
   }
   return {
     fetchUserInfo,
-    settings: {},
-  };
+    settings: {}
+  }
 }
 
 /**
@@ -87,24 +87,24 @@ export async function getInitialState(): Promise<{
  */
 export const request: RequestConfig = {
   errorHandler: (error: any) => {
-    const { response, name, data } = error;
+    const { response, name, data } = error
 
     if (name === 'BizError') {
-      notification.error({ message: data.errorMessage });
-      return data;
+      notification.error({ message: data.errorMessage })
+      return data
     }
 
     if (!response) {
       notification.error({
         description: '您的网络发生异常，无法连接服务器',
-        message: '网络异常',
-      });
+        message: '网络异常'
+      })
     }
-    throw error;
+    throw error
   },
   prefix: API_URL,
   credentials: 'include'
-};
+}
 
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({ initialState }) => {
@@ -112,16 +112,16 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     rightContentRender: () => <RightContent />,
     disableContentMargin: false,
     onPageChange: () => {
-      const { location } = history;
+      const { location } = history
       // 如果没有登录，重定向到 login
       if (!initialState?.currentUser && location.pathname !== loginPath) {
-        history.push(loginPath);
+        history.push(loginPath)
       }
     },
     menuHeaderRender: undefined,
     menuDataRender: menuData => initialState?.currentUser?.menus || menuData,
     // 自定义 403 页面
     // unAccessible: <div>unAccessible</div>,
-    ...initialState?.settings,
-  };
-};
+    ...initialState?.settings
+  }
+}

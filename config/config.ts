@@ -1,19 +1,19 @@
 // https://umijs.org/config/
-import { defineConfig } from 'umi';
-import defaultSettings from './defaultSettings';
-import routes from './routes';
+import { defineConfig } from 'umi'
+import defaultSettings from './defaultSettings'
+import routes from './routes'
 
 export default defineConfig({
   hash: true,
   antd: {},
   dva: {
-    hmr: true,
+    hmr: true
   },
   layout: {
     // https://umijs.org/zh-CN/plugins/plugin-layout
     locale: true,
     siderWidth: 208,
-    ...defaultSettings,
+    ...defaultSettings
   },
   // https://umijs.org/zh-CN/plugins/plugin-locale
   locale: {
@@ -21,16 +21,16 @@ export default defineConfig({
     default: 'zh-CN',
     antd: true,
     // default true, when it is true, will use `navigator.language` overwrite default
-    baseNavigator: true,
+    baseNavigator: true
   },
   targets: {
-    ie: 11,
+    ie: 11
   },
   // umi routes: https://umijs.org/docs/routing
   routes,
   // Theme for antd: https://ant.design/docs/react/customize-theme-cn
   theme: {
-    'primary-color': defaultSettings.primaryColor,
+    'primary-color': defaultSettings.primaryColor
   },
   title: false,
   ignoreMomentLocale: true,
@@ -39,5 +39,5 @@ export default defineConfig({
   nodeModulesTransform: { type: 'none' },
   webpack5: {},
   history: { type: 'hash' },
-  define: { API_URL: 'http://localhost:8080' },
-});
+  define: { API_URL: 'http://localhost:8080' }
+})

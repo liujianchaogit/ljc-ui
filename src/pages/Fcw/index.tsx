@@ -1,77 +1,79 @@
-import React, { useState, useRef } from "react";
-import { request, useRequest, Link, Helmet } from "umi";
-import { TabPaneProps } from "antd/lib/tabs";
-import useAntdMediaQuery from "use-media-antd-query";
-import {Menu, Spin} from "antd";
-import styles from "./index.less";
-import { FieldTimeOutlined, CalendarOutlined } from '@ant-design/icons';
+import React, { useState, useRef } from 'react'
+import { request, useRequest, Link, Helmet } from 'umi'
+import type { TabPaneProps } from 'antd/lib/tabs'
+import useAntdMediaQuery from 'use-media-antd-query'
+import { Menu, Spin } from 'antd'
+import styles from './index.less'
+import { FieldTimeOutlined, CalendarOutlined } from '@ant-design/icons'
 
 const fcwList: (TabPaneProps & {
-  key?: React.ReactText;
+  key?: React.ReactText
 })[] = [
   {
-    tab: "日本有码",
-    key: "c535ce35c36eb7fa67f39468157714f3"
+    tab: '日本有码',
+    key: 'c535ce35c36eb7fa67f39468157714f3'
   },
   {
-    tab: "偷拍系列",
-    key: "df166ea541c4cbd16166c73feea36117"
+    tab: '偷拍系列',
+    key: 'df166ea541c4cbd16166c73feea36117'
   },
   {
-    tab: "VIP专区",
-    key: "058ed3f9acd0842ef11c4b6a25ebdb5b"
+    tab: 'VIP专区',
+    key: '058ed3f9acd0842ef11c4b6a25ebdb5b'
   },
   {
-    tab: "欧美",
-    key: "9662210c07ecb7133502aeeb80347c3c"
+    tab: '欧美',
+    key: '9662210c07ecb7133502aeeb80347c3c'
   },
   {
-    tab: "日本无码",
-    key: "efc5f4716ea1e36b82dc5df866401ce7"
+    tab: '日本无码',
+    key: 'efc5f4716ea1e36b82dc5df866401ce7'
   },
   {
-    tab: "成人动漫",
-    key: "46480850549e28993fb49cefcb75f82a"
+    tab: '成人动漫',
+    key: '46480850549e28993fb49cefcb75f82a'
   },
   {
-    tab: "国产自拍",
-    key: "27f8a5c9ce83cbfa7b70fc5c9a73a082"
+    tab: '国产自拍',
+    key: '27f8a5c9ce83cbfa7b70fc5c9a73a082'
   },
   {
-    tab: "韩国综合",
-    key: "bd2c9c41dffe88e87f713b64b60cc966"
+    tab: '韩国综合',
+    key: 'bd2c9c41dffe88e87f713b64b60cc966'
   }
-];
+]
 
 const Fcw: React.FC = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [page, setPage] = useState(1);
-  const [playLoading, setPlayLoading] = useState(false);
-  const [activeKey, setActiveKey] = useState("27f8a5c9ce83cbfa7b70fc5c9a73a082");
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [page, setPage] = useState(1)
+  const [playLoading, setPlayLoading] = useState(false)
+  const [activeKey, setActiveKey] = useState('27f8a5c9ce83cbfa7b70fc5c9a73a082')
 
-  const { data, loading, loadingMore } = useRequest({ url: '/fcw/page', params: { categories: activeKey, page }}, {
+  const { data, loading, loadingMore } = useRequest({ url: '/fcw/page', params: { categories: activeKey, page } }, {
     loadMore: true,
     ref: containerRef,
-    onSuccess: () => {setPage(page + 1)},
+    onSuccess: () => { setPage(page + 1) },
     formatResult: res => { return { list: res.data } },
-    refreshDeps: [ activeKey ]
-  });
+    refreshDeps: [activeKey]
+  })
 
   const play = async (id: string) => {
     setPlayLoading(true)
     try {
+      // eslint-disable-next-line @typescript-eslint/no-shadow
       const { data } = await request('/fcw/mp4', { params: { id } })
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       data && window.open()?.document.write(`<body style="background: black; margin: 0">
-                    <iframe src=\'${data}\' width=\'100%\' height=\'100%\' frameborder></iframe>
-                 </body>`);
+                    <iframe src=\\'${data}\\' width=\\'100%\\' height=\\'100%\\' frameborder></iframe>
+                 </body>`)
     } finally {
       setPlayLoading(false)
     }
-  };
+  }
 
-  const colSize = useAntdMediaQuery();
+  const colSize = useAntdMediaQuery()
 
-  const isMobile = (colSize === "sm" || colSize === "xs");
+  const isMobile = (colSize === 'sm' || colSize === 'xs')
 
   return (
     <>
@@ -81,12 +83,12 @@ const Fcw: React.FC = () => {
       <div className={styles.fcw} ref={containerRef}>
         <div className={styles.content}>
           <Menu
-            theme={"dark"}
-            mode={"horizontal"}
+            theme={'dark'}
+            mode={'horizontal'}
             selectedKeys={[activeKey]}
             onClick={async m => {
-              setPage(1);
-              setActiveKey(m.key as string);
+              setPage(1)
+              setActiveKey(m.key as string)
             }}
           >
             <Menu.Item>
@@ -98,7 +100,7 @@ const Fcw: React.FC = () => {
                   <Menu.Item key={x.key}>
                     <span>{x.tab}</span>
                   </Menu.Item>
-                );
+                )
               })
             }
           </Menu>
@@ -109,11 +111,11 @@ const Fcw: React.FC = () => {
                   return (
                     <div
                       onClick={() => play(p.id)}
-                      className={styles.card} style={{ width: isMobile ? "48%" : "19%" }}
+                      className={styles.card} style={{ width: isMobile ? '48%' : '19%' }}
                       key={index}
                     >
                       <img alt={p.id} src={p.img} />
-                      <div style={{padding: '10px'}}>
+                      <div style={{ padding: '10px' }}>
                         <span className={styles.title}>{p.title}</span>
                         <div className={styles.desc} >
                           <span><FieldTimeOutlined /> {p.duration}</span>
@@ -121,25 +123,24 @@ const Fcw: React.FC = () => {
                         </div>
                       </div>
                     </div>
-                  );
+                  )
                 })
               }
-              {!isMobile &&
-              [...Array(5 - data?.list.length % 5)].map((item, index) => {
+              {!isMobile && [...Array(5 - data?.list.length % 5)].map((item, index) => {
                 return (
-                  <div style={{width: isMobile ? "48%" : "18%"}} key={index} />
-                );
+                  <div style={{ width: isMobile ? '48%' : '18%' }} key={index} />
+                )
               })
               }
             </div>
           </Spin>
           <Spin spinning={loadingMore}>
-            <div style={{height: 50, textAlign: "center"}} />
+            <div style={{ height: 50, textAlign: 'center' }} />
           </Spin>
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Fcw;
+export default Fcw
