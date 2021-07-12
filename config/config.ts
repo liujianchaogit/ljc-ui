@@ -1,6 +1,6 @@
 // https://umijs.org/config/
-import { defineConfig } from 'umi'
 import defaultSettings from './defaultSettings'
+import { defineConfig } from 'umi'
 import routes from './routes'
 
 export default defineConfig({
