@@ -1,11 +1,11 @@
+import type { RequestConfig, RunTimeLayoutConfig } from 'umi'
+import Cookies from 'js-cookie'
 import type { Settings as LayoutSettings } from '@ant-design/pro-layout'
 import { PageLoading } from '@ant-design/pro-layout'
-import { notification } from 'antd'
-import type { RequestConfig, RunTimeLayoutConfig } from 'umi'
-import { history } from 'umi'
 import RightContent from '@umijs/plugin-ljc-admin/src/components/RightContent'
 import { getUserInfo } from '@umijs/plugin-ljc-admin/src/services/sys'
-import Cookies from 'js-cookie'
+import { history } from 'umi'
+import { notification } from 'antd'
 
 const loginPath = '/user/login'
 

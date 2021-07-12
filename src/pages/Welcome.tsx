@@ -1,7 +1,7 @@
-import React from 'react'
+import { Alert, Card, Typography } from 'antd'
+import { FormattedMessage, useIntl } from 'umi'
 import { PageContainer } from '@ant-design/pro-layout'
-import { Card, Alert, Typography } from 'antd'
-import { useIntl, FormattedMessage } from 'umi'
+import React from 'react'
 import styles from './Welcome.less'
 
 const CodePreview: React.FC = ({ children }) => (

@@ -1,10 +1,10 @@
-import React, { useState, useRef } from 'react'
-import { request, useRequest, Link, Helmet } from 'umi'
-import type { TabPaneProps } from 'antd/lib/tabs'
-import useAntdMediaQuery from 'use-media-antd-query'
+import { CalendarOutlined, FieldTimeOutlined } from '@ant-design/icons'
+import { Helmet, Link, request, useRequest } from 'umi'
 import { Menu, Spin } from 'antd'
+import React, { useRef, useState } from 'react'
+import type { TabPaneProps } from 'antd/lib/tabs'
 import styles from './index.less'
-import { FieldTimeOutlined, CalendarOutlined } from '@ant-design/icons'
+import useAntdMediaQuery from 'use-media-antd-query'
 
 const fcwList: (TabPaneProps & {
   key?: React.ReactText
@@ -107,12 +107,12 @@ const Fcw: React.FC = () => {
           <Spin spinning={loading || playLoading}>
             <div className={styles.fd}>
               {
-                data?.list.map((p: any, index: number) => {
+                data?.list.map((p: any) => {
                   return (
                     <div
                       onClick={() => play(p.id)}
                       className={styles.card} style={{ width: isMobile ? '48%' : '19%' }}
-                      key={index}
+                      key={p.id}
                     >
                       <img alt={p.id} src={p.img} />
                       <div style={{ padding: '10px' }}>
@@ -126,9 +126,9 @@ const Fcw: React.FC = () => {
                   )
                 })
               }
-              {!isMobile && [...Array(5 - data?.list.length % 5)].map((item, index) => {
+              {!isMobile && [...Array(5 - data?.list.length % 5)].map(item => {
                 return (
-                  <div style={{ width: isMobile ? '48%' : '18%' }} key={index} />
+                  <div style={{ width: isMobile ? '48%' : '18%' }} key={item} />
                 )
               })
               }
