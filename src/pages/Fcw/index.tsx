@@ -64,7 +64,7 @@ const Fcw: React.FC = () => {
       const { data } = await request('/fcw/mp4', { params: { id } })
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       data && window.open()?.document.write(`<body style="background: black; margin: 0">
-                    <iframe src=\\'${data}\\' width=\\'100%\\' height=\\'100%\\' frameborder></iframe>
+                    <iframe src='${data}' width='100%' height='100%' frameborder></iframe>
                  </body>`)
     } finally {
       setPlayLoading(false)

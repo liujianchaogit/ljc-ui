@@ -1,5 +1,5 @@
-import { Alert, Card, Typography } from 'antd'
-import { FormattedMessage, useIntl } from 'umi'
+import { Alert, Card, Typography, Button } from 'antd'
+import { FormattedMessage, useIntl, request } from 'umi'
 import { PageContainer } from '@ant-design/pro-layout'
 import React from 'react'
 import styles from './Welcome.less'
@@ -17,45 +17,60 @@ export default (): React.ReactNode => {
   return (
     <PageContainer>
       <Card>
-        <Alert
-          message={intl.formatMessage({
-            id: 'pages.welcome.alertMessage',
-            defaultMessage: 'Faster and stronger heavy-duty components have been released.'
-          })}
-          type="success"
-          showIcon
-          banner
-          style={{
-            margin: -12,
-            marginBottom: 24
-          }}
-        />
-        <Typography.Text strong>
-          <FormattedMessage id="pages.welcome.advancedComponent" defaultMessage="Advanced Form" />{' '}
-          <a
-            href="https://procomponents.ant.design/components/table"
-            rel="noopener noreferrer"
-            target="__blank"
-          >
-            <FormattedMessage id="pages.welcome.link" defaultMessage="Welcome" />
-          </a>
-        </Typography.Text>
-        <CodePreview>yarn add @ant-design/pro-table</CodePreview>
-        <Typography.Text
-          strong
-          style={{
-            marginBottom: 12
-          }}
-        >
-          <FormattedMessage id="pages.welcome.advancedLayout" defaultMessage="Advanced layout" />{' '}
-          <a
-            href="https://procomponents.ant.design/components/layout"
-            rel="noopener noreferrer"
-            target="__blank"
-          >
-            <FormattedMessage id="pages.welcome.link" defaultMessage="Welcome" />
-          </a>
-        </Typography.Text>
+        <Button onClick={() => {
+          request('/ljc-auth-server/oauth/token', {
+            method: 'post',
+            headers: {
+              Authorization: 'Basic YXBwOmxqYw=='
+            },
+            params: {
+              grant_type: 'password',
+              username: 'admin',
+              password: '1qaz2wsx'
+            }
+          })
+        }}>登陆</Button>
+        <Button onClick={() => {
+          request('/ljc-product/product/category/listTree', {
+            method: 'get'
+          })
+        }}>获取分类</Button>
+        <Button onClick={() => {
+          request('/ljc-search/elasticSearch/page', {
+            method: 'get',
+            params: {
+              catalog3Id: 225
+            }
+          })
+        }}>获取商品</Button>
+        <Button onClick={() => {
+          request('/ljc-cart/cart/add', {
+            method: 'post',
+            headers: {
+              Authorization: 'Bearer imK1Xc9h73urE9TJt2yk2TyEdPM'
+            },
+            params: {
+              skuId: 2,
+              num: 2
+            }
+          })
+        }}>加入购物车</Button>
+        <Button onClick={() => {
+          request('/ljc-cart/cart/list', {
+            method: 'get',
+            headers: {
+              Authorization: 'Bearer imK1Xc9h73urE9TJt2yk2TyEdPM'
+            }
+          })
+        }}>购物车</Button>
+        <Button onClick={() => {
+          request('/ljc-order/order/confirm', {
+            method: 'get',
+            headers: {
+              Authorization: 'Bearer imK1Xc9h73urE9TJt2yk2TyEdPM'
+            }
+          })
+        }}>去结算</Button>
         <CodePreview>yarn add @ant-design/pro-layout</CodePreview>
       </Card>
     </PageContainer>
