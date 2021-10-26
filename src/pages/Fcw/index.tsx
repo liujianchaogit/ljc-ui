@@ -53,19 +53,25 @@ const Fcw: React.FC = () => {
     loadMore: true,
     ref: containerRef,
     onSuccess: () => { setPage(page + 1) },
-    formatResult: res => { return { list: res.data } },
+    formatResult: (res: any) => { return { list: res.data } },
     refreshDeps: [activeKey]
   })
 
   const play = async (id: string) => {
     setPlayLoading(true)
     try {
-      // eslint-disable-next-line @typescript-eslint/no-shadow
-      const { data } = await request('/fcw/mp4', { params: { id } })
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      data && window.open()?.document.write(`<body style="background: black; margin: 0">
-                    <iframe src='${data}' width='100%' height='100%' frameborder></iframe>
-                 </body>`)
+      const winHref = window.open('', '_blank')
+      request('/fcw/mp4', { params: { id } }).then((r: any) => {
+        if (r.data && winHref) {
+          setTimeout(() => {
+            winHref.document.write(`<body style="background: black; margin: 0">
+                     <iframe src='${r.data}' width='100%' height='100%' frameborder></iframe>
+                  </body>`)
+          }, 100)
+        } else {
+          winHref?.close()
+        }
+      })
     } finally {
       setPlayLoading(false)
     }
