@@ -7,5 +7,5 @@ export default function access(initialState: { currentUser?: API.CurrentUser | u
   const { currentUser } = initialState || {}
   return {
     routeFilter: (route: IRoute) => currentUser?.perms?.includes(route.name)
-  }
+  };
 }

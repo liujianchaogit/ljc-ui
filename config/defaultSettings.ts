@@ -1,13 +1,13 @@
-import type { Settings as LayoutSettings } from '@ant-design/pro-layout'
+import { Settings as LayoutSettings } from '@ant-design/pro-layout';
 
 const Settings: LayoutSettings & {
   pwa?: boolean;
   logo?: string;
 } = {
-  navTheme: 'dark',
+  navTheme: 'light',
   // 拂晓蓝
   primaryColor: '#1890ff',
-  layout: 'side',
+  layout: 'mix',
   contentWidth: 'Fluid',
   fixedHeader: false,
   fixSiderbar: true,
@@ -17,6 +17,6 @@ const Settings: LayoutSettings & {
   logo: 'logo.svg',
   iconfontUrl: 'font_2325568_r39e4ou7y1.js',
   menu: { locale: false }
-}
+};
 
-export default Settings
+export default Settings;

@@ -18,7 +18,7 @@ declare namespace API {
     };
     address?: string;
     phone?: string;
-    menus?: [];
+    menuData?: [];
     perms?: string[]
   };
 
