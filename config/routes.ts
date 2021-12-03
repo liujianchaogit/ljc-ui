@@ -21,14 +21,12 @@
     name: 'fcw',
     path: '/fcw',
     component: 'Fcw',
-    layout: false,
     access: 'routeFilter'
   },
   {
     name: '91',
     path: '/91',
     component: 'NineOne',
-    layout: false,
     access: 'routeFilter'
   },
   {
