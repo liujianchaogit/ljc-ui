@@ -72,6 +72,6 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
 };
 
 export const request = {
-  prefix: 'http://localhost:8080',
+  prefix: 'http://localhost:9876',
   credentials: 'include'
 }

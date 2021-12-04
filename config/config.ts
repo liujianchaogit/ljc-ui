@@ -24,9 +24,6 @@ export default defineConfig({
     // default true, when it is true, will use `navigator.language` overwrite default
     baseNavigator: true,
   },
-  dynamicImport: {
-    loading: '@ant-design/pro-layout/es/PageLoading',
-  },
   targets: {
     ie: 11,
   },
@@ -42,6 +39,6 @@ export default defineConfig({
   // Fast Refresh 热更新
   fastRefresh: {},
   nodeModulesTransform: { type: 'none' },
-  // webpack5: {},
+  webpack5: {},
   history: { type: 'hash' },
 });

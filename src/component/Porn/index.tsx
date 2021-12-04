@@ -10,9 +10,8 @@ import styles from './index.less'
 const Porn: React.FC<{
   tabList: (TabPaneProps & { key?: string })[],
   index: number,
-  type: string,
-  width: string
-}> = ({tabList, index, type, width}) => {
+  type: string
+}> = ({tabList, index, type }) => {
   const [page, setPage] = useState(1)
   const [tabActiveKey, setTabActiveKey] = useState(tabList[index].key)
 
@@ -22,8 +21,12 @@ const Porn: React.FC<{
   })
 
   const handleScroll = () => {
-    let d = document.documentElement
-    if (d.scrollHeight - d.scrollTop - d.clientHeight <= 100) if (!loadingMore) loadMore()
+    if (!loadingMore) {
+      let scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight
+      let scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+      let clientHeight = document.documentElement.clientHeight || document.body.clientHeight
+      if (scrollHeight - scrollTop - clientHeight <= 100) loadMore()
+    }
   }
 
   const { data, loading, loadMore, loadingMore } = useRequest({ url: `/${type}/page`, params: { category: tabActiveKey, page } }, {
@@ -52,6 +55,16 @@ const Porn: React.FC<{
 
   const isMobile = (colSize === 'sm' || colSize === 'xs')
 
+  const getWidth = () => {
+    switch (colSize) {
+      case "xxl": return '16%'
+      case "xl": return '16%'
+      case "lg": return '24%'
+      case "md": return '32%'
+      case "sm": return '49%'
+      case "xs": return '49%'
+    }
+  }
   return (
     <PageContainer
       loading={loading}
@@ -62,22 +75,22 @@ const Porn: React.FC<{
         setTabActiveKey(key)
       }}
     >
-      <div className={styles.fd}>
+      <div className={styles.fd} style={{ margin: isMobile ? '-12px' : 0 }}>
         {
           data?.list.map((d: any) => {
             return (
               <Card
                 hoverable
                 key={d.id}
-                style={{ width: isMobile ? '100%' : width, marginBottom: '20px' }}
-                cover={<img alt={d.id} src={d.img} height={'200px'} />}
+                style={{ width: getWidth(), marginBottom: isMobile ? '12px' : '20px' }}
+                cover={<img alt={d.id} src={d.img} height={isMobile ? '100px' : '200px'} />}
                 bodyStyle={{ padding: '12px' }}
                 onClick={() => play(d.id)}
               >
                 <div className={styles.title}>{d.title}</div>
                 <div className={styles.fd}>
-                  <Card.Meta avatar={<CalendarOutlined />} description={d.added} />
                   <Card.Meta avatar={<FieldTimeOutlined />} description={d.duration} />
+                  <Card.Meta avatar={<CalendarOutlined />} description={d.added} />
                 </div>
               </Card>
             )
