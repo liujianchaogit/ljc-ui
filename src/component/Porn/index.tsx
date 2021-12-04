@@ -67,6 +67,7 @@ const Porn: React.FC<{
   }
   return (
     <PageContainer
+      fixedHeader
       loading={loading}
       tabList={tabList}
       tabActiveKey={tabActiveKey}
