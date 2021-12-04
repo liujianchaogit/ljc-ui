@@ -89,9 +89,9 @@ const Porn: React.FC<{
                 onClick={() => play(d.id)}
               >
                 <div className={styles.title}>{d.title}</div>
-                <div className={styles.fd}>
-                  <Card.Meta avatar={<FieldTimeOutlined />} description={d.duration} />
-                  <Card.Meta avatar={<CalendarOutlined />} description={d.added} />
+                <div className={styles.fd} style={{ color: 'rgba(0, 0, 0, 0.5)' }}>
+                  <div><FieldTimeOutlined style={{ marginRight: '5px' }} />{ d.duration }</div>
+                  <div><CalendarOutlined style={{ marginRight: '5px' }} />{ d.added }</div>
                 </div>
               </Card>
             )
