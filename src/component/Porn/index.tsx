@@ -10,8 +10,9 @@ import styles from './index.less'
 const Porn: React.FC<{
   tabList: (TabPaneProps & { key?: string })[],
   index: number,
-  type: string
-}> = ({tabList, index, type }) => {
+  type: string,
+  html: (id: string) => string
+}> = ({tabList, index, type, html }) => {
   const [page, setPage] = useState(1)
   const [tabActiveKey, setTabActiveKey] = useState(tabList[index].key)
 
@@ -38,12 +39,10 @@ const Porn: React.FC<{
 
   const play = async (id: string) => {
     const winHref = window.open('', '_blank')
-    request(`/${type}/mp4`, { params: { id } }).then((r: any) => {
+    request(`/${type}/mp4`, { params: { id } }).then(r => {
       if (r.data && winHref) {
         setTimeout(() => {
-          winHref.document.write(`<body style="background: black; margin: 0">
-                    <iframe src='${r.data}' width='100%' height='100%' frameborder></iframe>
-                 </body>`)
+          winHref.document.write(html(r.data))
         }, 100)
       } else {
         winHref?.close()
@@ -83,6 +82,7 @@ const Porn: React.FC<{
               <Card
                 hoverable
                 key={d.id}
+                bordered={false}
                 style={{ width: getWidth(), marginBottom: isMobile ? '12px' : '20px' }}
                 cover={<img alt={d.id} src={d.img} height={isMobile ? '100px' : '200px'} />}
                 bodyStyle={{ padding: '12px' }}

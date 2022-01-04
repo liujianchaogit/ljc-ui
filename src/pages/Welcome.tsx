@@ -1,64 +1,24 @@
 import React from 'react';
-import { PageContainer } from '@ant-design/pro-layout';
-import { Card, Alert, Typography } from 'antd';
-import { useIntl, FormattedMessage } from 'umi';
-import styles from './Welcome.less';
-
-const CodePreview: React.FC = ({ children }) => (
-  <pre className={styles.pre}>
-    <code>
-      <Typography.Text copyable>{children}</Typography.Text>
-    </code>
-  </pre>
-);
+import { Card } from 'antd';
 
 const Welcome: React.FC = () => {
-  const intl = useIntl();
   return (
-    <PageContainer>
-      <Card>
-        <Alert
-          message={intl.formatMessage({
-            id: 'pages.welcome.alertMessage',
-            defaultMessage: 'Faster and stronger heavy-duty components have been released.',
-          })}
-          type="success"
-          showIcon
-          banner
-          style={{
-            margin: -12,
-            marginBottom: 24,
-          }}
-        />
-        <Typography.Text strong>
-          <FormattedMessage id="pages.welcome.advancedComponent" defaultMessage="Advanced Form" />{' '}
-          <a
-            href="https://procomponents.ant.design/components/table"
-            rel="noopener noreferrer"
-            target="__blank"
-          >
-            <FormattedMessage id="pages.welcome.link" defaultMessage="Welcome" />
-          </a>
-        </Typography.Text>
-        <CodePreview>yarn add @ant-design/pro-table</CodePreview>
-        <Typography.Text
-          strong
-          style={{
-            marginBottom: 12,
-          }}
-        >
-          <FormattedMessage id="pages.welcome.advancedLayout" defaultMessage="Advanced layout" />{' '}
-          <a
-            href="https://procomponents.ant.design/components/layout"
-            rel="noopener noreferrer"
-            target="__blank"
-          >
-            <FormattedMessage id="pages.welcome.link" defaultMessage="Welcome" />
-          </a>
-        </Typography.Text>
-        <CodePreview>yarn add @ant-design/pro-layout</CodePreview>
+      <Card style={{ textAlign: 'center' }}>
+        <p>浮世万千</p>
+        <p>吾爱有三</p>
+        <p>日月与卿</p>
+        <p>日为朝月为暮</p>
+        <p>卿为朝朝暮暮</p>
+        <p>浮世万千</p>
+        <p>不得有三</p>
+        <p>水中月镜中花梦中你</p>
+        <p>月可求花可得</p>
+        <p>唯你求而不得</p>
+        <p>自古多情空余恨</p>
+        <p>好梦由来最易醒</p>
+        <p>辞别再无相见日</p>
+        <p>终是一人度春秋</p>
       </Card>
-    </PageContainer>
   );
 };
 
