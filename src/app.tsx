@@ -40,12 +40,12 @@ export async function getInitialState(): Promise<{
     return {
       fetchUserInfo,
       currentUser,
-      settings: { ...defaultSettings },
+      settings: defaultSettings,
     };
   }
   return {
     fetchUserInfo,
-    settings: { ...defaultSettings },
+    settings: defaultSettings,
   };
 }
 
@@ -62,7 +62,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
       }
     },
     menuHeaderRender: undefined,
-    menuDataRender: menuData => initialState?.currentUser?.menuData || menuData,
+    menuDataRender: (menuData) => initialState?.currentUser?.menuData || menuData,
     // 自定义 403 页面
     // unAccessible: <div>unAccessible</div>,
     // 增加一个 loading 的状态
@@ -75,8 +75,8 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
             <SettingDrawer
               hideHintAlert
               hideCopyButton
-              enableDarkTheme
               disableUrlParams
+              enableDarkTheme
               settings={initialState?.settings}
               onSettingChange={(settings) => {
                 setInitialState((preInitialState) => ({
@@ -95,5 +95,5 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
 
 export const request = {
   prefix: 'http://121.4.241.251:9876',
-  credentials: 'include'
-}
+  credentials: 'include',
+};
