@@ -4,10 +4,8 @@
   "private": true,
   "scripts": {
     "start": "umi dev",
-    "build": "umi build"
-  },
-  "gitHooks": {
-    "pre-commit": "lint-staged"
+    "build": "umi build",
+    "precommit": "lint-staged"
   },
   "lint-staged": {
     "*.{js,jsx,less,md,json}": [
