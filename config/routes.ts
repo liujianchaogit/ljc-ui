@@ -3,37 +3,43 @@
     path: '/welcome',
     name: 'welcome',
     icon: 'smile',
-    component: './Welcome'
+    component: './Welcome',
   },
   {
     path: '/account',
     routes: [
       {
         path: '/account/settings',
-        component: 'Account/Settings'
+        component: 'Account/Settings',
       },
       {
-        component: '404'
-      }
-    ]
+        component: '404',
+      },
+    ],
   },
   {
     name: 'fcw',
     path: '/fcw',
     component: 'Fcw',
-    access: 'routeFilter'
+    access: 'routeFilter',
   },
   {
     name: '91',
     path: '/91',
     component: 'NineOne',
-    access: 'routeFilter'
+    access: 'routeFilter',
+  },
+  {
+    name: 'sgs',
+    path: '/sgs',
+    component: 'Sgs',
+    access: 'routeFilter',
   },
   {
     path: '/',
-    redirect: '/welcome'
+    redirect: '/welcome',
   },
   {
-    component: './404'
-  }
-]
+    component: './404',
+  },
+];

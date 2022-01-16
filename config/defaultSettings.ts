@@ -4,10 +4,10 @@ const Settings: LayoutSettings & {
   pwa?: boolean;
   logo?: string;
 } = {
-  navTheme: 'realDark',
+  navTheme: 'light',
   // 拂晓蓝
   primaryColor: '#1890ff',
-  layout: 'top',
+  layout: 'mix',
   contentWidth: 'Fluid',
   fixedHeader: false,
   fixSiderbar: true,
@@ -16,7 +16,7 @@ const Settings: LayoutSettings & {
   pwa: false,
   logo: 'logo.svg',
   iconfontUrl: 'font_2325568_r39e4ou7y1.js',
-  menu: { locale: false }
+  menu: { locale: false },
 };
 
 export default Settings;
