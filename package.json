@@ -6,9 +6,6 @@
     "start": "umi dev",
     "build": "umi build"
   },
-  "gitHooks": {
-    "pre-commit": "lint-staged"
-  },
   "lint-staged": {
     "*.{js,jsx,less,md,json}": [
       "prettier --write"
