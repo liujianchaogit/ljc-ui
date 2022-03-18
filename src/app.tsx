@@ -94,6 +94,6 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
 };
 
 export const request = {
-  prefix: 'http://121.4.241.251:9876', // localhost
+  prefix: 'http://192.168.1.3',
   credentials: 'include',
 };
