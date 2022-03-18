@@ -94,6 +94,6 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
 };
 
 export const request = {
-  prefix: 'http://192.168.1.3',
+  prefix: window.location.protocol + '//' + window.location.hostname,
   credentials: 'include',
 };

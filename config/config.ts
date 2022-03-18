@@ -5,7 +5,6 @@ import defaultSettings from './defaultSettings';
 import routes from './routes';
 
 export default defineConfig({
-  hash: true,
   antd: {},
   dva: {
     hmr: true,
